@@ -2,7 +2,11 @@ import {
   INSIGHT_KEYWORDS, INSIGHT_STATS, INTERCEPTED, REQ_STATS, TONES,
   VERTICALS, WEEK_DATA, BUSINESS_NAME, starStr,
 } from "../data.js";
+import { IS_IOS } from "../lib.js";
 import { accent, cardStyle, mono, pill, primaryBtn, toggleStyle } from "../ui.js";
+
+// Mobile review cards: radius 10 on Android, 14 on iOS (web stays 8).
+const mobileCardRadius = IS_IOS ? 14 : 10;
 
 function Panel({ stripeTo, icon, iconBg, title, sub, right, children, compact }) {
   return (
@@ -49,7 +53,7 @@ export function Inbox({ r: rep, compact }) {
     const replied = isReplied(r);
     const open = st.openId === r.id;
     return (
-      <div key={r.id} style={{ ...cardStyle(r.sentiment === "neg" && !replied ? "rgba(255,101,132,0.45)" : "#28304a"), padding: compact ? "12px 14px" : "14px 16px" }}>
+      <div key={r.id} style={{ ...cardStyle(r.sentiment === "neg" && !replied ? "rgba(255,101,132,0.45)" : "#28304a", compact ? mobileCardRadius : 8), padding: compact ? "12px 14px" : "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: compact ? 7 : 10, marginBottom: compact ? 6 : 8, flexWrap: "wrap" }}>
           <span style={{ fontFamily: "monospace", fontSize: compact ? 9 : 10, fontWeight: 700, letterSpacing: 1, color: r.pc, border: `1px solid ${r.pc}`, borderRadius: 2, padding: compact ? "1px 6px" : "2px 7px", textTransform: "uppercase" }}>{r.platform}</span>
           <span style={{ color: "#f4c55a", fontSize: compact ? 12 : 13, letterSpacing: 1 }}>{starStr(r.rating)}</span>

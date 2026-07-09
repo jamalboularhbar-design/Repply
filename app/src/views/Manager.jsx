@@ -37,7 +37,7 @@ export default function Manager() {
   if (isMobile) {
     // Compact mobile chrome (Capacitor shell). iOS gets the floating pill tab bar.
     const tabBarStyle = IS_IOS
-      ? { position: "fixed", bottom: 18, left: 14, right: 14, display: "flex", justifyContent: "space-around", background: "rgba(16,21,38,0.85)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid #28304a", borderRadius: 26, padding: "8px 0 6px", zIndex: 10 }
+      ? { position: "fixed", bottom: 22, left: 12, right: 12, display: "flex", justifyContent: "space-around", background: "rgba(16,21,38,0.92)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #28304a", borderRadius: 26, padding: "8px 0 6px", zIndex: 10 }
       : { position: "fixed", bottom: 0, left: 0, right: 0, display: "flex", justifyContent: "space-around", background: "rgba(16,21,38,0.97)", borderTop: "1px solid #28304a", padding: "8px 0 calc(6px + env(safe-area-inset-bottom))", zIndex: 10 };
     return (
       <div style={{ minHeight: "100vh", background: "#070b18", color: "#e8e8f0", padding: "12px 14px 110px", fontFamily: IS_IOS ? "-apple-system, 'Segoe UI', system-ui, sans-serif" : undefined }}>
