@@ -17,6 +17,17 @@ export default function Landing() {
     e.preventDefault();
     document.getElementById("join")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
+  const join = () => {
+    const email = st.email.trim();
+    if (!email) return;
+    // Optimistic UX; the signup lands in the waitlist store server-side.
+    setSt((s) => ({ ...s, joined: true }));
+    fetch("/api/waitlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, lang: st.lang }),
+    }).catch(() => {});
+  };
 
   return (
     <div dir={st.lang === "ar" ? "rtl" : "ltr"} style={{ minHeight: "100vh", position: "relative" }}>
@@ -54,7 +65,7 @@ export default function Landing() {
               placeholder={t.placeholder}
               style={{ flex: "1 1 220px", background: "#101526", border: "1px solid #28304a", borderRadius: 8, color: "#e8e8f0", fontSize: 14, padding: "12px 14px" }}
             />
-            <button onClick={() => { if (st.email.trim()) setSt((s) => ({ ...s, joined: true })); }} style={{ background: accent, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, padding: "12px 22px", cursor: "pointer" }}>{t.join}</button>
+            <button onClick={join} style={{ background: accent, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, padding: "12px 22px", cursor: "pointer" }}>{t.join}</button>
           </div>
           <div style={{ minHeight: 20, marginTop: 10 }}>
             {st.joined
