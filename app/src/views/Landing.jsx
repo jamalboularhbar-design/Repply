@@ -4,8 +4,8 @@ import { accent } from "../ui.js";
 
 const LANGS = ["en", "fr", "es", "ar"];
 const FEATURE_ICONS = ["📥", "🌐", "🚀", "🔔", "📍", "💬", "📣"];
-const FEATURE_ICON_BG = ["rgba(108,99,255,0.15)", "rgba(58,214,224,0.15)", "rgba(67,233,123,0.12)", "rgba(255,101,132,0.12)", "rgba(244,197,90,0.15)", "rgba(255,101,132,0.12)", "rgba(218,112,214,0.15)"];
-const FEATURE_STRIPES = ["#ff6584", "#3ad6e0", "#43e97b", "#f4c55a", "#f4c55a", "#ff6584", "#da70d6"];
+const FEATURE_ICON_BG = ["rgba(108,99,255,0.15)", "rgba(58,214,224,0.15)", "rgba(67,233,123,0.12)", "rgba(255,101,132,0.12)", "rgba(244,197,90,0.15)", "rgba(255,101,132,0.12)", "rgba(192,132,252,0.15)"];
+const FEATURE_STRIPES = ["#ff6584", "#3ad6e0", "#43e97b", "#f4c55a", "#f4c55a", "#ff6584", "#c084fc"];
 
 export default function Landing() {
   const [st, setSt] = usePersistentState("repply-landing-v1", { email: "", joined: false, lang: "en" });
@@ -86,14 +86,10 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* OUTCOME BANNER */}
-        <div style={{ maxWidth: 640, margin: "0 auto 56px" }}>
-          <div style={{ background: "#101526", border: "1px solid #28304a", borderRadius: 12, padding: "22px 26px", position: "relative", overflow: "hidden", textAlign: "center" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #43e97b, #3ad6e0)" }} />
-            <p style={{ fontSize: 16, lineHeight: 1.7, color: "#d0d0e8", margin: 0 }}>
-              {t.outcomeA}<span style={{ color: "#43e97b", fontWeight: 700 }}>{t.outcomeStat}</span>{t.outcomeB}
-            </p>
-          </div>
+        {/* OUTCOME */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, maxWidth: 640, margin: "0 auto 56px", background: "linear-gradient(135deg, rgba(67,233,123,0.1), rgba(67,233,123,0.02))", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 12, padding: "18px 22px" }}>
+          <span style={{ fontSize: 22 }}>💰</span>
+          <p style={{ fontSize: 13, color: "#d0d0e8", lineHeight: 1.6, margin: 0 }}>{t.outcome}</p>
         </div>
 
         {/* PRICING */}

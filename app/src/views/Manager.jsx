@@ -2,12 +2,13 @@ import { BUSINESS_NAME } from "../data.js";
 import { IS_IOS, useMediaQuery } from "../lib.js";
 import { useRepply } from "../state.js";
 import { accent } from "../ui.js";
-import { GetReviews, Inbox, Insights, Rank, Setup } from "./panels.jsx";
+import { GetReviews, Inbox, Insights, Rank, Setup, Share } from "./panels.jsx";
 
 const TABS = [
   { id: "inbox", label: "📥 Inbox" },
   { id: "requests", label: "🚀 Get reviews" },
   { id: "rank", label: "📍 Rank" },
+  { id: "share", label: "📣 Share" },
   { id: "insights", label: "📊 Insights" },
 ];
 
@@ -28,7 +29,8 @@ export default function Manager() {
     switch (st.tab) {
       case "requests": return <GetReviews r={rep} compact={compact} />;
       case "rank": return <Rank r={rep} compact={compact} goRequests={goRequests} />;
-      case "insights": return <Insights compact={compact} />;
+      case "share": return <Share r={rep} compact={compact} />;
+      case "insights": return <Insights r={rep} compact={compact} />;
       case "setup": return <Setup r={rep} compact={compact} />;
       default: return <Inbox r={rep} compact={compact} />;
     }
