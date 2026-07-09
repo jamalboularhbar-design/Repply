@@ -29,6 +29,7 @@ export const LANDING = {
       { title: "Beat the shop down the street", desc: "See where you rank in the Map Pack for the searches that matter, who's #1, and exactly how many reviews per month it takes to catch them." },
       { title: "WhatsApp-first invites", desc: "In most of the world, customers live on WhatsApp — not email. Send review invites where they'll actually be opened." },
       { title: "Free social content", desc: "Every 5-star review becomes a ready Instagram/Facebook post — quote, stars, credit and caption — one click to copy." },
+      { title: "Your rating on your website", desc: "A badge, carousel or floating pill shows your live Google rating on your own site. One script tag — works on WordPress, Wix, Squarespace or anything else." },
     ],
     outcome: "A quarter-star rating gain is worth roughly $600–2,300 a month in extra bookings, depending on your business.",
     planItems: [
@@ -70,6 +71,7 @@ export const LANDING = {
       { title: "Dépassez le commerce d'à côté", desc: "Voyez votre position dans le Map Pack sur les recherches qui comptent, qui est n°1, et combien d'avis par mois il faut pour le rattraper." },
       { title: "Invitations via WhatsApp", desc: "Dans une grande partie du monde, vos clients vivent sur WhatsApp — pas sur l'email. Envoyez vos invitations là où elles seront vraiment ouvertes." },
       { title: "Contenu social gratuit", desc: "Chaque avis 5 étoiles devient un post Instagram/Facebook prêt à l'emploi — citation, étoiles, crédit et légende — à copier en un clic." },
+      { title: "Votre note sur votre site", desc: "Badge, carrousel ou pastille flottante : votre note Google s'affiche en direct sur votre propre site. Une seule balise script — compatible WordPress, Wix, Squarespace et le reste." },
     ],
     outcome: "Un quart d'étoile de plus vaut environ 600 à 2 300 $ par mois de réservations supplémentaires, selon votre activité.",
     planItems: [
@@ -111,6 +113,7 @@ export const LANDING = {
       { title: "Supera al negocio de al lado", desc: "Mira tu posición en el Map Pack para las búsquedas que importan, quién es el nº1, y cuántas reseñas al mes necesitas para alcanzarlo." },
       { title: "Invitaciones por WhatsApp", desc: "En buena parte del mundo tus clientes viven en WhatsApp — no en el email. Envía las invitaciones donde de verdad se abren." },
       { title: "Contenido social gratis", desc: "Cada reseña de 5 estrellas se convierte en un post listo para Instagram/Facebook — cita, estrellas, crédito y descripción — se copia en un clic." },
+      { title: "Tu puntuación en tu web", desc: "Una insignia, un carrusel o una píldora flotante muestran tu nota de Google en directo en tu propia web. Una sola etiqueta script — funciona con WordPress, Wix, Squarespace o lo que uses." },
     ],
     outcome: "Un cuarto de estrella extra vale entre 600 y 2.300 $ al mes en reservas adicionales, según tu negocio.",
     planItems: [
@@ -152,6 +155,7 @@ export const LANDING = {
       { title: "تفوّق على المحل المجاور", desc: "اعرف ترتيبك في نتائج الخريطة على عمليات البحث المهمة، ومن في المركز الأول، وكم تقييماً شهرياً تحتاج للحاق به." },
       { title: "دعوات عبر واتساب أولاً", desc: "في معظم العالم زبائنك يعيشون على واتساب — لا على البريد الإلكتروني. أرسل دعوات التقييم حيث ستُفتح فعلاً." },
       { title: "محتوى تسويقي مجاني", desc: "كل تقييم بخمس نجوم يتحول إلى منشور جاهز لإنستغرام/فيسبوك — الاقتباس والنجوم والاسم والتعليق — بنسخة واحدة." },
+      { title: "تقييمك على موقعك", desc: "شارة أو شريط عرض أو زر عائم يعرض تقييمك على غوغل مباشرة في موقعك. وسم script واحد — يعمل مع ووردبريس وويكس وسكوير سبيس وغيرها." },
     ],
     outcome: "ربع نجمة إضافية تساوي تقريباً 600 إلى 2300 دولار شهرياً من الحجوزات الإضافية، حسب نوع نشاطك.",
     planItems: [

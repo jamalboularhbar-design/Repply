@@ -4,10 +4,10 @@ import { Icon } from "../icons.jsx";
 import { accent } from "../ui.js";
 
 const LANGS = ["en", "fr", "es", "ar"];
-const FEATURE_ICONS = ["inbox", "globe", "send", "bell", "pin", "message", "megaphone"];
-const FEATURE_ICON_COLOR = ["#6c63ff", "#3ad6e0", "#43e97b", "#ff6584", "#f4c55a", "#ff6584", "#c084fc"];
-const FEATURE_ICON_BG = ["rgba(108,99,255,0.15)", "rgba(58,214,224,0.15)", "rgba(67,233,123,0.12)", "rgba(255,101,132,0.12)", "rgba(244,197,90,0.15)", "rgba(255,101,132,0.12)", "rgba(192,132,252,0.15)"];
-const FEATURE_STRIPES = ["#ff6584", "#3ad6e0", "#43e97b", "#f4c55a", "#f4c55a", "#ff6584", "#c084fc"];
+const FEATURE_ICONS = ["inbox", "globe", "send", "bell", "pin", "message", "megaphone", "bookmark"];
+const FEATURE_ICON_COLOR = ["#6c63ff", "#3ad6e0", "#43e97b", "#ff6584", "#f4c55a", "#ff6584", "#c084fc", "#7cc4ff"];
+const FEATURE_ICON_BG = ["rgba(108,99,255,0.15)", "rgba(58,214,224,0.15)", "rgba(67,233,123,0.12)", "rgba(255,101,132,0.12)", "rgba(244,197,90,0.15)", "rgba(255,101,132,0.12)", "rgba(192,132,252,0.15)", "rgba(124,196,255,0.15)"];
+const FEATURE_STRIPES = ["#ff6584", "#3ad6e0", "#43e97b", "#f4c55a", "#f4c55a", "#ff6584", "#c084fc", "#7cc4ff"];
 
 export default function Landing() {
   const [st, setSt] = usePersistentState("repply-landing-v1", { email: "", joined: false, lang: "en" });
@@ -60,6 +60,52 @@ export default function Landing() {
             {st.joined
               ? <span style={{ fontFamily: "monospace", fontSize: 11, color: "#43e97b" }}>{t.joinedMsg}</span>
               : <span style={{ fontFamily: "monospace", fontSize: 11, color: "#4a4a6a" }}>{price}{t.priceNote}</span>}
+          </div>
+        </div>
+
+        {/* PRODUCT PREVIEW — the real inbox, rebuilt in miniature (product UI stays LTR/EN) */}
+        <div dir="ltr" style={{ maxWidth: 660, margin: "0 auto 56px" }}>
+          <div style={{ background: "#0b101f", border: "1px solid #28304a", borderRadius: 12, overflow: "hidden", boxShadow: "0 24px 70px rgba(0,0,0,0.55)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 14px", borderBottom: "1px solid #28304a", background: "#101526" }}>
+              {["#ff6584", "#f4c55a", "#43e97b"].map((c) => (
+                <span key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c, opacity: 0.8 }} />
+              ))}
+              <span style={{ margin: "0 auto", fontFamily: "monospace", fontSize: 9, letterSpacing: 2, color: "#4a4a6a", textTransform: "uppercase" }}>repply · review inbox</span>
+              <span style={{ width: 39 }} />
+            </div>
+            <div style={{ padding: "16px 18px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                <div style={{ width: 24, height: 24, borderRadius: 6, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="inbox" size={12} color={accent} /></div>
+                <span style={{ fontSize: 12, fontWeight: 600 }}>Review Inbox</span>
+                <span style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: 1, color: "#7a7a9a" }}>ALL PLATFORMS · UNIFIED</span>
+                <span style={{ marginLeft: "auto", fontFamily: "monospace", fontSize: 9, color: "#ff6584" }}>7 need a reply</span>
+              </div>
+
+              <div style={{ background: "#101526", border: "1px solid rgba(255,101,132,0.45)", borderRadius: 8, padding: "10px 12px", marginBottom: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5, flexWrap: "wrap" }}>
+                  <span style={{ fontFamily: "monospace", fontSize: 8, fontWeight: 700, letterSpacing: 1, color: "#3ad6e0", border: "1px solid #3ad6e0", borderRadius: 2, padding: "1px 5px" }}>GOOGLE</span>
+                  <span style={{ color: "#f4c55a", fontSize: 10, letterSpacing: 1 }}>★★☆☆☆</span>
+                  <span style={{ fontSize: 10, fontWeight: 600 }}>Mara T.</span>
+                  <span style={{ marginLeft: "auto", fontFamily: "monospace", fontSize: 8, fontWeight: 700, color: "#ff6584" }}>NEEDS REPLY</span>
+                </div>
+                <p style={{ fontSize: 10, color: "#a0a0c8", lineHeight: 1.6, margin: "0 0 8px" }}>Waited 25 minutes for a latte on a quiet Tuesday. Staff were friendly but clearly understaffed…</p>
+                <div style={{ background: "#0b101f", border: "1px solid #28304a", borderRadius: 6, padding: "8px 10px" }}>
+                  <div style={{ fontFamily: "monospace", fontSize: 8, letterSpacing: 1, color: "#7a7a9a", marginBottom: 4 }}>DRAFT REPLY · WARM · AUTO-GENERATED</div>
+                  <p style={{ fontSize: 10, color: "#d0d0e8", lineHeight: 1.6, margin: "0 0 8px" }}>Hi Mara — I'm sorry, that's on us. Thanks for telling us straight instead of just not coming back. Next time you're in, ask for me and I'll make sure it goes right.</p>
+                  <span style={{ display: "inline-block", background: accent, color: "#fff", borderRadius: 5, fontSize: 9, fontWeight: 600, padding: "4px 10px" }}>Send reply</span>
+                </div>
+              </div>
+
+              <div style={{ background: "#101526", border: "1px solid #28304a", borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
+                  <span style={{ fontFamily: "monospace", fontSize: 8, fontWeight: 700, letterSpacing: 1, color: "#ff6584", border: "1px solid #ff6584", borderRadius: 2, padding: "1px 5px" }}>YELP</span>
+                  <span style={{ color: "#f4c55a", fontSize: 10, letterSpacing: 1 }}>★★★★★</span>
+                  <span style={{ fontSize: 10, fontWeight: 600 }}>Deniz K.</span>
+                  <span style={{ fontSize: 10, color: "#a0a0c8" }}>Best flat white in the neighborhood…</span>
+                  <span style={{ marginLeft: "auto", fontFamily: "monospace", fontSize: 8, fontWeight: 700, color: "#43e97b" }}>✓ REPLIED</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
