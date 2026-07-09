@@ -4,6 +4,7 @@ import {
 } from "../data.js";
 import { useRef, useState } from "react";
 import { IS_IOS } from "../lib.js";
+import { Icon } from "../icons.jsx";
 import { accent, cardStyle, mono, pill, primaryBtn, toggleStyle } from "../ui.js";
 
 // Mobile review cards: radius 10 on Android, 14 on iOS (web stays 8).
@@ -61,7 +62,7 @@ export function Inbox({ r: rep, compact }) {
           {!compact && <span style={{ fontSize: 13, fontWeight: 600 }}>{r.name}</span>}
           {!compact && <span style={{ fontSize: 11, color: "#4a4a6a", fontFamily: "monospace" }}>{r.time}</span>}
           {!compact && r.lang && (
-            <span style={{ fontFamily: "monospace", fontSize: 10, color: "#3ad6e0", border: "1px solid rgba(58,214,224,0.4)", borderRadius: 2, padding: "2px 7px" }}>🌐 {r.lang} · auto-detected</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "monospace", fontSize: 10, color: "#3ad6e0", border: "1px solid rgba(58,214,224,0.4)", borderRadius: 2, padding: "2px 7px" }}><Icon name="globe" size={10} /> {r.lang} · auto-detected</span>
           )}
           <span style={{ marginLeft: "auto", fontFamily: "monospace", fontSize: compact ? 9 : 10, fontWeight: 700, letterSpacing: 0.5, color: replied ? "#43e97b" : "#ff6584" }}>{replied ? "✓ REPLIED" : "NEEDS REPLY"}</span>
         </div>
@@ -99,8 +100,8 @@ export function Inbox({ r: rep, compact }) {
           <div style={{ display: "flex", gap: 8 }}>
             <button
               onClick={() => set({ openId: r.id })}
-              style={{ background: "rgba(108,99,255,0.12)", border: `1px solid ${accent}`, borderRadius: compact ? 8 : 6, color: accent, fontFamily: "monospace", fontSize: 11, fontWeight: 600, padding: compact ? 10 : "5px 12px", cursor: "pointer", ...(compact ? { width: "100%", minHeight: 44 } : {}) }}
-            >✍ draft reply</button>
+              style={{ background: "rgba(108,99,255,0.12)", border: `1px solid ${accent}`, borderRadius: compact ? 8 : 6, color: accent, fontFamily: "monospace", fontSize: 11, fontWeight: 600, padding: compact ? 10 : "5px 12px", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, ...(compact ? { width: "100%", minHeight: 44 } : {}) }}
+            ><Icon name="pen" size={11} /> draft reply</button>
           </div>
         )}
       </div>
@@ -135,10 +136,10 @@ export function Inbox({ r: rep, compact }) {
   if (compact) return <>{filterPills}{cards}</>;
 
   return (
-    <Panel stripeTo="#ff6584" icon="📥" iconBg="rgba(108,99,255,0.15)" title="Review Inbox" sub="ALL PLATFORMS · UNIFIED"
+    <Panel stripeTo="#ff6584" icon={<Icon name="inbox" color={accent} />} iconBg="rgba(108,99,255,0.15)" title="Review Inbox" sub="ALL PLATFORMS · UNIFIED"
       right={<span style={{ fontFamily: "monospace", fontSize: 11, color: "#ff6584" }}>{needsReplyCount} need a reply</span>}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, ...cardStyle(), padding: "9px 14px", marginBottom: 14 }}>
-        <span style={{ fontSize: 14 }}>🔔</span>
+        <Icon name="bell" size={15} color="#f4c55a" />
         <div style={{ flex: 1 }}>
           <div style={mono(10, "#a0a0c8", 1)}>Instant alerts</div>
           <div style={{ fontSize: 11, color: "#4a4a6a" }}>SMS + push the moment a review ≤ 3★ lands</div>
@@ -154,7 +155,7 @@ export function Inbox({ r: rep, compact }) {
 export function GetReviews({ r: rep, compact }) {
   const { st, set, vertical, inviteFlash, flashInvites } = rep;
   return (
-    <Panel compact={compact} stripeTo="#43e97b" icon="🚀" iconBg="rgba(67,233,123,0.12)" title="Get Reviews" sub="REQUEST ENGINE · INTERCEPTION">
+    <Panel compact={compact} stripeTo="#43e97b" icon={<Icon name="send" color="#43e97b" />} iconBg="rgba(67,233,123,0.12)" title="Get Reviews" sub="REQUEST ENGINE · INTERCEPTION">
       <StatCards stats={REQ_STATS(accent)} />
 
       <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Send review invites</div>
@@ -186,20 +187,20 @@ export function GetReviews({ r: rep, compact }) {
       </div>
       <div style={{ display: "flex", gap: 10, alignItems: "stretch", flexWrap: "wrap", marginBottom: 18 }}>
         <div style={{ flex: "1 1 180px", ...cardStyle(), padding: "12px 14px", textAlign: "center" }}>
-          <div style={{ fontSize: 18, marginBottom: 4 }}>💬</div>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}><Icon name="message" size={18} color={accent} /></div>
           <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 2 }}>"How was your visit?"</div>
           <div style={{ fontSize: 11, color: "#7a7a9a" }}>every invite starts here</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 8, flex: "1.4 1 240px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(67,233,123,0.08)", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 8, padding: "9px 12px" }}>
-            <span>😊</span>
+            <Icon name="smile" size={16} color="#43e97b" />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: "#43e97b" }}>Happy → Google review page</div>
               <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>47 sent this month</div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,101,132,0.07)", border: "1px solid rgba(255,101,132,0.35)", borderRadius: 8, padding: "9px 12px" }}>
-            <span>😕</span>
+            <Icon name="frown" size={16} color="#ff6584" />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: "#ff6584" }}>Unhappy → private feedback form</div>
               <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>11 caught before going public</div>
@@ -228,7 +229,7 @@ export function GetReviews({ r: rep, compact }) {
 export function Rank({ r: rep, compact, goRequests }) {
   const { vertical } = rep;
   return (
-    <Panel compact={compact} stripeTo="#f4c55a" icon="📍" iconBg="rgba(244,197,90,0.15)" title="Map Pack Rank" sub="LOCAL SEARCH · 1 MI RADIUS">
+    <Panel compact={compact} stripeTo="#f4c55a" icon={<Icon name="pin" color="#f4c55a" />} iconBg="rgba(244,197,90,0.15)" title="Map Pack Rank" sub="LOCAL SEARCH · 1 MI RADIUS">
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
         {vertical.rankRows.map((kw) => (
           <div key={kw.keyword} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", ...cardStyle(), flexWrap: "wrap" }}>
@@ -258,7 +259,7 @@ export function Rank({ r: rep, compact, goRequests }) {
         </div>
       </div>
       <div style={{ display: "flex", gap: 10, padding: "10px 14px", background: "rgba(108,99,255,0.08)", border: "1px solid rgba(108,99,255,0.35)", borderRadius: 8, alignItems: "center" }}>
-        <span>💡</span>
+        <Icon name="bulb" size={15} color="#f4c55a" />
         <span style={{ fontSize: 12, color: "#a0a0c8", lineHeight: 1.6 }}>
           You need ~10 more reviews/month to match the leader's velocity.{" "}
           <a href="#" onClick={(e) => { e.preventDefault(); goRequests(); }} style={{ color: accent }}>Send invites from Get reviews →</a>
@@ -279,13 +280,13 @@ export function Share({ r: rep, compact }) {
     copyT.current = setTimeout(() => setCopied(null), 1800);
   };
   return (
-    <Panel compact={compact} stripeTo="#c084fc" icon="📣" iconBg="rgba(192,132,252,0.15)" title="Turn 5★ reviews into posts" sub="SOCIAL CARD GENERATOR · INSTAGRAM & FACEBOOK">
+    <Panel compact={compact} stripeTo="#c084fc" icon={<Icon name="megaphone" color="#c084fc" />} iconBg="rgba(192,132,252,0.15)" title="Turn 5★ reviews into posts" sub="SOCIAL CARD GENERATOR · INSTAGRAM & FACEBOOK">
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
         {vertical.shareables.map((sh, i) => (
           <div key={sh.quote} style={{ background: "#161c32", border: "1px solid #28304a", borderRadius: 10, overflow: "hidden" }}>
             <div style={{ aspectRatio: "1 / 1", padding: 28, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", background: sh.cardBg, position: "relative" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>💬</div>
+                <div style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={13} color="#fff" /></div>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: 0.5 }}>{BUSINESS_NAME}</span>
               </div>
               <div>
@@ -343,13 +344,13 @@ export function Widget({ r: rep, compact }) {
     );
     if (style === "pill") return (
       <div style={{ position: "absolute", bottom: 14, right: 14, display: "flex", alignItems: "center", gap: 8, background: "#161c32", border: "1px solid #28304a", borderRadius: 24, padding: "8px 16px 8px 8px", boxShadow: "0 4px 18px rgba(0,0,0,0.45)" }}>
-        <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}>💬</div>
+        <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={12} color={accent} /></div>
         <span style={{ fontSize: 12, fontWeight: 600 }}>4.2★ on Google</span>
       </div>
     );
     return (
       <div style={{ ...cardStyle(), padding: "14px 18px", display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ width: 32, height: 32, borderRadius: 6, background: "rgba(244,197,90,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>⭐</div>
+        <div style={{ width: 32, height: 32, borderRadius: 6, background: "rgba(244,197,90,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="star" size={15} color="#f4c55a" fill /></div>
         <div>
           <div style={{ fontSize: 15, fontWeight: 700 }}>4.2 <span style={{ color: "#f4c55a", fontSize: 13, letterSpacing: 1 }}>★★★★☆</span></div>
           <div style={{ fontFamily: "monospace", fontSize: 10, color: "#7a7a9a" }}>Rated on Google · 214 reviews</div>
@@ -359,7 +360,7 @@ export function Widget({ r: rep, compact }) {
   };
 
   return (
-    <Panel compact={compact} stripeTo="#7cc4ff" icon="🔖" iconBg="rgba(124,196,255,0.15)" title="Website review widget" sub="EMBED · YOUR RATING ON YOUR OWN SITE">
+    <Panel compact={compact} stripeTo="#7cc4ff" icon={<Icon name="bookmark" color="#7cc4ff" />} iconBg="rgba(124,196,255,0.15)" title="Website review widget" sub="EMBED · YOUR RATING ON YOUR OWN SITE">
       <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
         {WIDGET_STYLES.map((w) => (
           <button key={w.id} onClick={() => setStyle(w.id)} style={{ ...pill(style === w.id), color: style === w.id ? accent : "#7a7a9a", fontSize: 12, padding: compact ? "7px 14px" : "5px 12px", minHeight: compact ? 34 : undefined }}>{w.label}</button>
@@ -391,7 +392,7 @@ export function Widget({ r: rep, compact }) {
 export function Insights({ r: rep, compact }) {
   const { vertical } = rep;
   return (
-    <Panel compact={compact} stripeTo="#3ad6e0" icon="📊" iconBg="rgba(58,214,224,0.15)" title="Reputation Insights" sub="LAST 30 DAYS">
+    <Panel compact={compact} stripeTo="#3ad6e0" icon={<Icon name="chart" color="#3ad6e0" />} iconBg="rgba(58,214,224,0.15)" title="Reputation Insights" sub="LAST 30 DAYS">
       <StatCards stats={INSIGHT_STATS(accent)} />
 
       <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Rating trend · 8 weeks</div>
@@ -424,7 +425,7 @@ export function Insights({ r: rep, compact }) {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, background: "linear-gradient(135deg, rgba(67,233,123,0.1), rgba(67,233,123,0.02))", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 8, padding: "14px 16px", marginBottom: 18 }}>
-        <span style={{ fontSize: 20 }}>💰</span>
+        <Icon name="coins" size={20} color="#43e97b" />
         <div style={{ flex: 1 }}>
           <div style={{ ...mono(10, "#7a7a9a", 1), textTransform: "uppercase", marginBottom: 2 }}>Estimated revenue impact</div>
           <div style={{ fontSize: 13, color: "#d0d0e8" }}>
@@ -453,7 +454,7 @@ export function Setup({ r: rep, compact }) {
   const mark = (d) => (d ? "✓" : "○");
   const col = (d) => (d ? "#43e97b" : "#7a7a9a");
   return (
-    <Panel compact={compact} stripeTo="#3ad6e0" icon="⚙️" iconBg="rgba(108,99,255,0.15)" title="Setup"
+    <Panel compact={compact} stripeTo="#3ad6e0" icon={<Icon name="settings" color={accent} />} iconBg="rgba(108,99,255,0.15)" title="Setup"
       sub={setupDone === 4 ? "ALL SET — YOU'RE LIVE" : `${setupDone} OF 4 COMPLETE`}>
       <div style={{ height: 4, background: "#161c32", borderRadius: 2, overflow: "hidden", marginBottom: 18 }}>
         <div style={{ height: "100%", width: `${Math.round((setupDone / 4) * 100)}%`, background: `linear-gradient(90deg, ${accent}, #43e97b)`, transition: "width 0.4s ease" }} />

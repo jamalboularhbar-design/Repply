@@ -1,9 +1,11 @@
 import { usePersistentState } from "../lib.js";
 import { LANDING } from "../i18n.js";
+import { Icon } from "../icons.jsx";
 import { accent } from "../ui.js";
 
 const LANGS = ["en", "fr", "es", "ar"];
-const FEATURE_ICONS = ["📥", "🌐", "🚀", "🔔", "📍", "💬", "📣"];
+const FEATURE_ICONS = ["inbox", "globe", "send", "bell", "pin", "message", "megaphone"];
+const FEATURE_ICON_COLOR = ["#6c63ff", "#3ad6e0", "#43e97b", "#ff6584", "#f4c55a", "#ff6584", "#c084fc"];
 const FEATURE_ICON_BG = ["rgba(108,99,255,0.15)", "rgba(58,214,224,0.15)", "rgba(67,233,123,0.12)", "rgba(255,101,132,0.12)", "rgba(244,197,90,0.15)", "rgba(255,101,132,0.12)", "rgba(192,132,252,0.15)"];
 const FEATURE_STRIPES = ["#ff6584", "#3ad6e0", "#43e97b", "#f4c55a", "#f4c55a", "#ff6584", "#c084fc"];
 
@@ -24,7 +26,7 @@ export default function Landing() {
         {/* NAV */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 0", gap: 12, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 7, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>💬</div>
+            <div style={{ width: 30, height: 30, borderRadius: 7, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={15} color={accent} /></div>
             <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.02em" }}>Repply</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -78,7 +80,7 @@ export default function Landing() {
             {t.features.map((f, i) => (
               <div key={f.title} style={{ background: "#101526", border: "1px solid #28304a", borderRadius: 12, padding: "20px 22px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${accent}, ${FEATURE_STRIPES[i]})` }} />
-                <div style={{ width: 32, height: 32, borderRadius: 6, background: FEATURE_ICON_BG[i], display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, marginBottom: 12 }}>{FEATURE_ICONS[i]}</div>
+                <div style={{ width: 32, height: 32, borderRadius: 6, background: FEATURE_ICON_BG[i], display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}><Icon name={FEATURE_ICONS[i]} size={16} color={FEATURE_ICON_COLOR[i]} /></div>
                 <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{f.title}</div>
                 <p style={{ fontSize: 12, color: "#7a7a9a", lineHeight: 1.7, margin: 0 }}>{f.desc}</p>
               </div>
@@ -88,7 +90,7 @@ export default function Landing() {
 
         {/* OUTCOME */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, maxWidth: 640, margin: "0 auto 56px", background: "linear-gradient(135deg, rgba(67,233,123,0.1), rgba(67,233,123,0.02))", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 12, padding: "18px 22px" }}>
-          <span style={{ fontSize: 22 }}>💰</span>
+          <Icon name="coins" size={22} color="#43e97b" />
           <p style={{ fontSize: 13, color: "#d0d0e8", lineHeight: 1.6, margin: 0 }}>{t.outcome}</p>
         </div>
 

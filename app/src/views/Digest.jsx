@@ -1,5 +1,6 @@
 import { usePersistentState } from "../lib.js";
 import { DIGEST } from "../i18n.js";
+import { Icon } from "../icons.jsx";
 import { accent } from "../ui.js";
 
 const LANGS = ["en", "fr", "es", "ar"];
@@ -32,7 +33,7 @@ export default function Digest() {
         <div style={{ height: 3, background: `linear-gradient(90deg, ${accent}, #ff6584)` }} />
 
         <div style={{ padding: "26px 28px 22px", borderBottom: "1px solid #28304a", display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>💬</div>
+          <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={16} color={accent} /></div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 700 }}>{t.headTitle}</div>
             <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: 1, color: "#7a7a9a" }}>{BUSINESS} · {t.headRange}</div>

@@ -2,22 +2,23 @@ import { BUSINESS_NAME } from "../data.js";
 import { IS_IOS, useMediaQuery } from "../lib.js";
 import { useRepply } from "../state.js";
 import { accent } from "../ui.js";
+import { Icon } from "../icons.jsx";
 import { GetReviews, Inbox, Insights, Rank, Setup, Share, Widget } from "./panels.jsx";
 
 const TABS = [
-  { id: "inbox", label: "📥 Inbox" },
-  { id: "requests", label: "🚀 Get reviews" },
-  { id: "rank", label: "📍 Rank" },
-  { id: "share", label: "📣 Share" },
-  { id: "insights", label: "📊 Insights" },
-  { id: "widget", label: "🔖 Widget" },
+  { id: "inbox", icon: "inbox", label: "Inbox" },
+  { id: "requests", icon: "send", label: "Get reviews" },
+  { id: "rank", icon: "pin", label: "Rank" },
+  { id: "share", icon: "megaphone", label: "Share" },
+  { id: "insights", icon: "chart", label: "Insights" },
+  { id: "widget", icon: "bookmark", label: "Widget" },
 ];
 
 const MOBILE_TABS = [
-  { id: "inbox", icon: "📥", label: "INBOX" },
-  { id: "requests", icon: "🚀", label: "INVITES" },
-  { id: "rank", icon: "📍", label: "RANK" },
-  { id: "insights", icon: "📊", label: "STATS" },
+  { id: "inbox", icon: "inbox", label: "INBOX" },
+  { id: "requests", icon: "send", label: "INVITES" },
+  { id: "rank", icon: "pin", label: "RANK" },
+  { id: "insights", icon: "chart", label: "STATS" },
 ];
 
 export default function Manager() {
@@ -46,12 +47,12 @@ export default function Manager() {
     return (
       <div style={{ minHeight: "100vh", background: "#070b18", color: "#e8e8f0", padding: "12px 14px 110px", fontFamily: IS_IOS ? "-apple-system, 'Segoe UI', system-ui, sans-serif" : undefined }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>💬</div>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={14} color={accent} /></div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 700 }}>{BUSINESS_NAME}</div>
             <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: 1, color: "#7a7a9a" }}>4.2 ★ · {needsReplyCount} NEED A REPLY</div>
           </div>
-          <button onClick={() => set({ tab: "setup" })} aria-label="Setup" style={{ background: "transparent", border: "none", fontSize: 15, cursor: "pointer", minWidth: 44, minHeight: 44, opacity: st.tab === "setup" ? 1 : 0.5 }}>⚙️</button>
+          <button onClick={() => set({ tab: "setup" })} aria-label="Setup" style={{ background: "transparent", border: "none", cursor: "pointer", minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", opacity: st.tab === "setup" ? 1 : 0.5 }}><Icon name="settings" size={16} color="#a0a0c8" /></button>
           <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#43e97b" }} />
         </div>
 
@@ -61,8 +62,8 @@ export default function Manager() {
           {MOBILE_TABS.map((t) => {
             const active = st.tab === t.id;
             return (
-              <button key={t.id} onClick={() => set({ tab: t.id, openId: null })} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, minWidth: 64, minHeight: 44, justifyContent: "center", background: "transparent", border: "none", cursor: "pointer" }}>
-                <span style={{ fontSize: 17, opacity: active ? 1 : 0.5 }}>{t.icon}</span>
+              <button key={t.id} onClick={() => set({ tab: t.id, openId: null })} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, minWidth: 64, minHeight: 44, justifyContent: "center", background: "transparent", border: "none", cursor: "pointer" }}>
+                <Icon name={t.icon} size={17} color={active ? accent : "#4a4a6a"} />
                 <span style={{ fontFamily: "monospace", fontSize: 9, color: active ? accent : "#4a4a6a", fontWeight: active ? 700 : 400 }}>{t.label}</span>
               </button>
             );
@@ -89,7 +90,7 @@ export default function Manager() {
       <div style={{ position: "relative", zIndex: 1, maxWidth: 920, margin: "0 auto", padding: "0 20px 80px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "28px 0 22px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>💬</div>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="chat" size={17} color={accent} /></div>
             <div>
               <div style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-0.02em", background: `linear-gradient(135deg, #fff 30%, ${accent} 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Repply</div>
               <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: "#7a7a9a" }}>Review OS · {BUSINESS_NAME}</div>
@@ -108,10 +109,12 @@ export default function Manager() {
 
         <div style={{ display: "flex", gap: 4, marginBottom: 14, flexWrap: "wrap" }}>
           {TABS.map((t) => (
-            <button key={t.id} onClick={() => set({ tab: t.id, openId: null })} style={tabStyle(st.tab === t.id)}>{t.label}</button>
+            <button key={t.id} onClick={() => set({ tab: t.id, openId: null })} style={{ ...tabStyle(st.tab === t.id), display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <Icon name={t.icon} size={13} /> {t.label}
+            </button>
           ))}
-          <button onClick={() => set({ tab: "setup", openId: null })} style={{ ...tabStyle(st.tab === "setup"), marginLeft: "auto" }}>
-            ⚙️ Setup {setupDone === 4 ? "✓" : `${setupDone}/4`}
+          <button onClick={() => set({ tab: "setup", openId: null })} style={{ ...tabStyle(st.tab === "setup"), marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <Icon name="settings" size={13} /> Setup {setupDone === 4 ? "✓" : `${setupDone}/4`}
           </button>
         </div>
 
