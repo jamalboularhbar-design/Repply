@@ -309,6 +309,85 @@ export function Share({ r: rep, compact }) {
   );
 }
 
+const WIDGET_STYLES = [
+  { id: "badge", label: "Rating badge" },
+  { id: "carousel", label: "Review carousel" },
+  { id: "pill", label: "Floating pill" },
+];
+
+const bizSlug = BUSINESS_NAME.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+export function Widget({ r: rep, compact }) {
+  const { vertical } = rep;
+  const [style, setStyle] = useState("badge");
+  const [copied, setCopied] = useState(false);
+  const copyT = useRef(null);
+  const demo = vertical.shareables[0];
+
+  const embed = `<script\n  src="https://widget.repply.app/embed.js"\n  data-business="${bizSlug}"\n  data-style="${style}"\n  async><\/script>`;
+
+  const onCopy = () => {
+    try { navigator.clipboard.writeText(embed); } catch { /* clipboard unavailable */ }
+    setCopied(true);
+    clearTimeout(copyT.current);
+    copyT.current = setTimeout(() => setCopied(false), 1800);
+  };
+
+  const preview = () => {
+    if (style === "carousel") return (
+      <div style={{ ...cardStyle(), padding: "16px 18px", maxWidth: 300, display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ color: "#f4c55a", fontSize: 13, letterSpacing: 1 }}>★★★★★</div>
+        <p style={{ fontSize: 13, color: "#d0d0e8", lineHeight: 1.6, fontStyle: "italic", margin: 0 }}>"{demo.quote}"</p>
+        <div style={{ fontFamily: "monospace", fontSize: 11, color: "#7a7a9a" }}>— {demo.name} · {demo.platform}</div>
+      </div>
+    );
+    if (style === "pill") return (
+      <div style={{ position: "absolute", bottom: 14, right: 14, display: "flex", alignItems: "center", gap: 8, background: "#161c32", border: "1px solid #28304a", borderRadius: 24, padding: "8px 16px 8px 8px", boxShadow: "0 4px 18px rgba(0,0,0,0.45)" }}>
+        <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}>💬</div>
+        <span style={{ fontSize: 12, fontWeight: 600 }}>4.2★ on Google</span>
+      </div>
+    );
+    return (
+      <div style={{ ...cardStyle(), padding: "14px 18px", display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ width: 32, height: 32, borderRadius: 6, background: "rgba(244,197,90,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>⭐</div>
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 700 }}>4.2 <span style={{ color: "#f4c55a", fontSize: 13, letterSpacing: 1 }}>★★★★☆</span></div>
+          <div style={{ fontFamily: "monospace", fontSize: 10, color: "#7a7a9a" }}>Rated on Google · 214 reviews</div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Panel compact={compact} stripeTo="#7cc4ff" icon="🔖" iconBg="rgba(124,196,255,0.15)" title="Website review widget" sub="EMBED · YOUR RATING ON YOUR OWN SITE">
+      <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+        {WIDGET_STYLES.map((w) => (
+          <button key={w.id} onClick={() => setStyle(w.id)} style={{ ...pill(style === w.id), color: style === w.id ? accent : "#7a7a9a", fontSize: 12, padding: compact ? "7px 14px" : "5px 12px", minHeight: compact ? 34 : undefined }}>{w.label}</button>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+        <div>
+          <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Live preview</div>
+          <div style={{ position: "relative", minHeight: 220, background: "#0b101f", border: "1px solid #28304a", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+            {preview()}
+          </div>
+        </div>
+        <div>
+          <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Embed code</div>
+          <pre style={{ background: "#0b101f", border: "1px solid #28304a", borderRadius: 8, padding: "14px 16px", margin: "0 0 10px", fontFamily: "monospace", fontSize: 11, lineHeight: 1.7, color: "#a0a0c8", overflowX: "auto" }}>{embed}</pre>
+          <button onClick={onCopy} style={{ ...primaryBtn, width: "100%", ...(compact ? { padding: 12, borderRadius: 8, minHeight: 44 } : {}) }}>
+            {copied ? "✓ Copied to clipboard" : "Copy embed code"}
+          </button>
+          <p style={{ fontSize: 11, color: "#7a7a9a", lineHeight: 1.7, margin: "10px 0 0" }}>
+            Paste it just before <span style={{ fontFamily: "monospace", color: "#a0a0c8" }}>&lt;/body&gt;</span> — works on WordPress, Wix, Squarespace, Shopify or any hand-built site. The widget updates automatically as new reviews land.
+          </p>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
 export function Insights({ r: rep, compact }) {
   const { vertical } = rep;
   return (
