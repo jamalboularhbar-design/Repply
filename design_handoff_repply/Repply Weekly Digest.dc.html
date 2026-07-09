@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; background: #070b18; }
+    a { color: #6c63ff; }
+    a:hover { color: #8f88ff; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; background: #070b18; font-family: 'Segoe UI', system-ui, sans-serif; color: #e8e8f0; padding: 40px 20px 80px; box-sizing: border-box">
+
+  <div style="max-width: 600px; margin: 0 auto 14px; display: flex; align-items: center; gap: 10px">
+    <span style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #4a4a6a">{{ t.previewLabel }}</span>
+    <span style="flex: 1; height: 1px; background: #28304a"></span>
+    <div style="display: flex; gap: 6px">
+      <sc-for list="{{ langPills }}" as="lp" hint-placeholder-count="4">
+        <button onClick="{{ lp.onClick }}" style="background: {{ lp.bg }}; border: 1px solid {{ accent }}; border-radius: 4px; color: {{ lp.color }}; font-family: monospace; font-size: 10px; font-weight: 700; padding: 3px 9px; cursor: pointer">{{ lp.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div dir="{{ dir }}" style="max-width: 600px; margin: 0 auto 18px; background: #101526; border: 1px solid #28304a; border-radius: 8px; padding: 12px 16px">
+    <div style="font-size: 11px; color: #4a4a6a; font-family: monospace; margin-bottom: 4px">{{ t.subjectLabel }}</div>
+    <div style="font-size: 14px; font-weight: 600">{{ t.subject }}</div>
+  </div>
+
+  <!-- EMAIL BODY -->
+  <div dir="{{ dir }}" data-screen-label="Digest email" style="max-width: 600px; margin: 0 auto; background: #101526; border: 1px solid #28304a; border-radius: 12px; overflow: hidden">
+    <div style="height: 3px; background: linear-gradient(90deg, {{ accent }}, #ff6584)"></div>
+
+    <div style="padding: 26px 28px 22px; border-bottom: 1px solid #28304a; display: flex; align-items: center; gap: 12px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: rgba(108,99,255,0.15); border: 1px solid {{ accent }}; display: flex; align-items: center; justify-content: center; font-size: 16px">💬</div>
+      <div>
+        <div style="font-size: 15px; font-weight: 700">{{ t.headTitle }}</div>
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 1px; color: #7a7a9a">{{ businessName }} · {{ t.headRange }}</div>
+      </div>
+    </div>
+
+    <div style="padding: 22px 28px">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 22px">
+        <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px; text-align: center">
+          <div style="font-size: 20px; font-weight: 700; color: #f4c55a">4.3 ★</div>
+          <div style="font-size: 10px; font-family: monospace; color: #43e97b">▲ 0.1</div>
+        </div>
+        <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px; text-align: center">
+          <div style="font-size: 20px; font-weight: 700; color: #3ad6e0">11</div>
+          <div style="font-size: 10px; font-family: monospace; color: #7a7a9a">{{ t.statNew }}</div>
+        </div>
+        <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px; text-align: center">
+          <div style="font-size: 20px; font-weight: 700; color: #43e97b">91%</div>
+          <div style="font-size: 10px; font-family: monospace; color: #7a7a9a">{{ t.statAnswered }}</div>
+        </div>
+      </div>
+
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #ff6584; margin-bottom: 8px">{{ t.needsLabel }}</div>
+      <div style="background: #161c32; border: 1px solid rgba(255,101,132,0.45); border-radius: 8px; padding: 14px 16px; margin-bottom: 22px">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap">
+          <span style="font-family: monospace; font-size: 10px; font-weight: 700; color: #3ad6e0; border: 1px solid #3ad6e0; border-radius: 2px; padding: 2px 7px">GOOGLE</span>
+          <span style="color: #f4c55a; font-size: 13px">★★☆☆☆</span>
+          <span style="font-size: 12px; font-weight: 600">Mara T.</span>
+        </div>
+        <p style="font-size: 12px; color: #d0d0e8; line-height: 1.7; margin: 0 0 10px">{{ t.needsQuote }}</p>
+        <a href="#" style="display: inline-block; background: {{ accent }}; color: #fff; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 8px 16px; text-decoration: none">{{ t.replyCta }}</a>
+      </div>
+
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #43e97b; margin-bottom: 8px">{{ t.bestLabel }}</div>
+      <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px; margin-bottom: 22px">
+        <p style="font-size: 12px; color: #d0d0e8; line-height: 1.7; margin: 0; font-style: italic">{{ t.bestQuote }} <span style="color: #7a7a9a; font-style: normal">— Priya S., 5★ Google</span></p>
+      </div>
+
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 8px">{{ t.rankLabel }}</div>
+      <div style="display: flex; align-items: center; gap: 12px; background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 16px; margin-bottom: 6px">
+        <span style="font-family: monospace; font-size: 12px; color: #d0d0e8; flex: 1">{{ t.rankKeyword }}</span>
+        <span style="font-family: monospace; font-size: 13px; font-weight: 700; color: #f4c55a">#4</span>
+        <span style="font-family: monospace; font-size: 11px; color: #43e97b">▲ 1</span>
+      </div>
+      <p style="font-size: 11px; color: #4a4a6a; line-height: 1.6; margin: 0 0 22px">{{ t.rankNote }}</p>
+
+      <a href="#" style="display: block; text-align: center; background: rgba(108,99,255,0.12); border: 1px solid {{ accent }}; color: {{ accent }}; border-radius: 8px; font-size: 13px; font-weight: 600; padding: 12px; text-decoration: none">{{ t.openCta }}</a>
+    </div>
+
+    <div style="padding: 14px 28px; border-top: 1px solid #28304a; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px">
+      <span style="font-family: monospace; font-size: 9px; letter-spacing: 1px; color: #4a4a6a">{{ t.footer }}</span>
+      <span style="font-family: monospace; font-size: 9px; color: #4a4a6a"><a href="#" style="color: #4a4a6a">{{ t.unsub }}</a> · <a href="#" style="color: #4a4a6a">{{ t.prefs }}</a></span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 720 },
+  &quot;businessName&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;LUNA COFFEE ROASTERS&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#6c63ff&quot;, &quot;options&quot;: [&quot;#6c63ff&quot;, &quot;#e3b341&quot;, &quot;#2fe6a8&quot;, &quot;#7cc4ff&quot;, &quot;#ff6584&quot;, &quot;#c084fc&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; },
+  &quot;defaultLang&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;en&quot;, &quot;options&quot;: [&quot;en&quot;, &quot;fr&quot;, &quot;es&quot;, &quot;ar&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Locale&quot; }
+}">
+class Component extends DCLogic {
+  state = { lang: (this.props && this.props.defaultLang) || "en" };
+
+  copy() {
+    return {
+      en: {
+        previewLabel: "Email preview · Monday 08:00",
+        subjectLabel: "SUBJECT",
+        subject: "Your week: 4.3★ (+0.1), 11 new reviews, 1 needs you today",
+        headTitle: "Your reputation this week",
+        headRange: "MAR 2 – MAR 8",
+        statNew: "new reviews",
+        statAnswered: "answered",
+        needsLabel: "Needs you today",
+        needsQuote: "\"Waited 25 minutes for a latte on a quiet Tuesday. Staff were friendly but clearly understaffed…\"",
+        replyCta: "Reply now — draft is ready",
+        bestLabel: "Best moment of the week",
+        bestQuote: "\"The baristas remember my order and my name. Little things like that make this my favorite spot in the city.\"",
+        rankLabel: "Rank watch",
+        rankKeyword: "\"coffee near me\"",
+        rankNote: "Verve Coffee got 5 new reviews this week; you got 4. Keep the invites going.",
+        openCta: "Open Repply",
+        footer: "REPPLY · WEEKLY DIGEST",
+        unsub: "unsubscribe",
+        prefs: "preferences",
+      },
+      fr: {
+        previewLabel: "Aperçu email · lundi 08h00",
+        subjectLabel: "OBJET",
+        subject: "Votre semaine : 4,3★ (+0,1), 11 nouveaux avis, 1 vous attend",
+        headTitle: "Votre réputation cette semaine",
+        headRange: "2 – 8 MARS",
+        statNew: "nouveaux avis",
+        statAnswered: "répondus",
+        needsLabel: "À traiter aujourd'hui",
+        needsQuote: "« 25 minutes d'attente pour un latte un mardi calme. L'équipe était aimable mais clairement en sous-effectif… »",
+        replyCta: "Répondre — le brouillon est prêt",
+        bestLabel: "Le meilleur moment de la semaine",
+        bestQuote: "« Les baristas se souviennent de ma commande et de mon prénom. Ce sont ces petites choses qui en font mon endroit préféré. »",
+        rankLabel: "Suivi de position",
+        rankKeyword: "« café près de moi »",
+        rankNote: "Verve Coffee a reçu 5 nouveaux avis cette semaine ; vous 4. Continuez les invitations.",
+        openCta: "Ouvrir Repply",
+        footer: "REPPLY · RÉCAP HEBDO",
+        unsub: "se désabonner",
+        prefs: "préférences",
+      },
+      es: {
+        previewLabel: "Vista previa · lunes 08:00",
+        subjectLabel: "ASUNTO",
+        subject: "Tu semana: 4,3★ (+0,1), 11 reseñas nuevas, 1 te espera hoy",
+        headTitle: "Tu reputación esta semana",
+        headRange: "2 – 8 MAR",
+        statNew: "reseñas nuevas",
+        statAnswered: "respondidas",
+        needsLabel: "Necesita tu respuesta hoy",
+        needsQuote: "«25 minutos esperando un latte un martes tranquilo. El personal fue amable pero claramente faltaba gente…»",
+        replyCta: "Responder — el borrador está listo",
+        bestLabel: "El mejor momento de la semana",
+        bestQuote: "«Los baristas recuerdan mi pedido y mi nombre. Esos detalles hacen que sea mi sitio favorito de la ciudad.»",
+        rankLabel: "Seguimiento de posición",
+        rankKeyword: "«café cerca de mí»",
+        rankNote: "Verve Coffee recibió 5 reseñas nuevas esta semana; tú 4. Sigue con las invitaciones.",
+        openCta: "Abrir Repply",
+        footer: "REPPLY · RESUMEN SEMANAL",
+        unsub: "darse de baja",
+        prefs: "preferencias",
+      },
+      ar: {
+        previewLabel: "معاينة البريد · الاثنين 08:00",
+        subjectLabel: "الموضوع",
+        subject: "أسبوعك: 4.3★ (+0.1)، 11 تقييماً جديداً، 1 بانتظارك اليوم",
+        headTitle: "سمعتك هذا الأسبوع",
+        headRange: "2 – 8 مارس",
+        statNew: "تقييمات جديدة",
+        statAnswered: "تم الرد",
+        needsLabel: "يحتاج ردك اليوم",
+        needsQuote: "«انتظرت 25 دقيقة من أجل لاتيه في يوم هادئ. الموظفون لطفاء لكن من الواضح أن العدد غير كافٍ…»",
+        replyCta: "رد الآن — المسودة جاهزة",
+        bestLabel: "أجمل لحظة هذا الأسبوع",
+        bestQuote: "«الباريستا يتذكرون طلبي واسمي. هذه التفاصيل الصغيرة تجعله مكاني المفضل في المدينة.»",
+        rankLabel: "متابعة الترتيب",
+        rankKeyword: "«قهوة قريبة مني»",
+        rankNote: "حصل Verve Coffee على 5 تقييمات جديدة هذا الأسبوع؛ وأنت على 4. واصل إرسال الدعوات.",
+        openCta: "افتح ريبلاي",
+        footer: "ريبلاي · الملخص الأسبوعي",
+        unsub: "إلغاء الاشتراك",
+        prefs: "التفضيلات",
+      },
+    };
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? "#6c63ff";
+    const lang = this.state.lang;
+    return {
+      accent,
+      businessName: this.props.businessName ?? "LUNA COFFEE ROASTERS",
+      t: this.copy()[lang],
+      dir: lang === "ar" ? "rtl" : "ltr",
+      langPills: [
+        { id: "en", label: "EN" },
+        { id: "fr", label: "FR" },
+        { id: "es", label: "ES" },
+        { id: "ar", label: "AR" },
+      ].map((l) => ({
+        label: l.label,
+        bg: lang === l.id ? accent : "transparent",
+        color: lang === l.id ? "#fff" : accent,
+        onClick: () => this.setState({ lang: l.id }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

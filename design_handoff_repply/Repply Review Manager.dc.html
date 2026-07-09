@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; background: #070b18; }
+    a { color: #6c63ff; }
+    a:hover { color: #8f88ff; }
+    ::selection { background: rgba(108,99,255,0.35); }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; background: #070b18; font-family: 'Segoe UI', system-ui, sans-serif; color: #e8e8f0; position: relative">
+  <div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px); background-size: 40px 40px"></div>
+
+  <div style="position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 20px 80px">
+
+    <!-- HEADER -->
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 0 22px; flex-wrap: wrap">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(108,99,255,0.15); border: 1px solid {{ accent }}; display: flex; align-items: center; justify-content: center; font-size: 17px">💬</div>
+        <div>
+          <div style="font-size: 17px; font-weight: 700; letter-spacing: -0.02em; background: linear-gradient(135deg, #fff 30%, {{ accent }} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent">Repply</div>
+          <div style="font-family: monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a">Review OS · {{ businessName }}</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px; align-items: center">
+        <sc-for list="{{ headerPlatforms }}" as="hp" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 6px; background: #101526; border: 1px solid #28304a; border-radius: 20px; padding: 4px 11px; font-size: 11px; color: #a0a0c8"><span style="width: 6px; height: 6px; border-radius: 50%; background: #43e97b; display: inline-block"></span>{{ hp }}</div>
+        </sc-for>
+        <button onClick="{{ noop }}" style="display: flex; align-items: center; gap: 6px; background: transparent; border: 1px dashed #28304a; border-radius: 20px; padding: 4px 11px; font-size: 11px; color: #7a7a9a; cursor: pointer; font-family: inherit">+ More</button>
+      </div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div style="display: flex; gap: 4px; margin-bottom: 14px">
+      <button onClick="{{ goInbox }}" style="background: {{ inboxTabBg }}; border: 1px solid {{ inboxTabBorder }}; border-radius: 6px; color: {{ inboxTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit">📥 Inbox</button>
+      <button onClick="{{ goRequests }}" style="background: {{ reqTabBg }}; border: 1px solid {{ reqTabBorder }}; border-radius: 6px; color: {{ reqTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit">🚀 Get reviews</button>
+      <button onClick="{{ goRank }}" style="background: {{ rankTabBg }}; border: 1px solid {{ rankTabBorder }}; border-radius: 6px; color: {{ rankTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit">📍 Rank</button>
+      <button onClick="{{ goShare }}" style="background: {{ shareTabBg }}; border: 1px solid {{ shareTabBorder }}; border-radius: 6px; color: {{ shareTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit">📣 Share</button>
+      <button onClick="{{ goInsights }}" style="background: {{ insightsTabBg }}; border: 1px solid {{ insightsTabBorder }}; border-radius: 6px; color: {{ insightsTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit">📊 Insights</button>
+      <button onClick="{{ goSetup }}" style="background: {{ setupTabBg }}; border: 1px solid {{ setupTabBorder }}; border-radius: 6px; color: {{ setupTabColor }}; font-size: 12px; font-weight: 500; padding: 6px 13px; cursor: pointer; font-family: inherit; margin-left: auto">⚙️ Setup {{ setupBadge }}</button>
+    </div>
+
+    <!-- INBOX -->
+    <sc-if value="{{ showInbox }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Inbox" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #ff6584)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(108,99,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">📥</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Review Inbox</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">ALL PLATFORMS · UNIFIED</div>
+          </div>
+          <span style="font-family: monospace; font-size: 11px; color: #ff6584">{{ needsReplyCount }} need a reply</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 9px 14px; margin-bottom: 14px">
+          <span style="font-size: 14px">🔔</span>
+          <div style="flex: 1">
+            <div style="font-family: monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #a0a0c8">Instant alerts</div>
+            <div style="font-size: 11px; color: #4a4a6a">SMS + push the moment a review ≤ 3★ lands</div>
+          </div>
+          <button onClick="{{ onToggleAlerts }}" style="background: {{ alertBg }}; border: 1px solid {{ alertBorder }}; border-radius: 20px; color: {{ alertColor }}; font-family: monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; cursor: pointer">{{ alertLabel }}</button>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.onClick }}" style="background: {{ f.bg }}; border: 1px solid {{ f.border }}; border-radius: 20px; color: {{ f.color }}; font-size: 12px; padding: 5px 12px; cursor: pointer; font-family: inherit">{{ f.label }}</button>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="4">
+            <div style="background: #161c32; border: 1px solid {{ r.cardBorder }}; border-radius: 8px; padding: 14px 16px">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap">
+                <span style="font-family: monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; color: {{ r.platformColor }}; border: 1px solid {{ r.platformColor }}; border-radius: 2px; padding: 2px 7px; text-transform: uppercase">{{ r.platform }}</span>
+                <span style="color: #f4c55a; font-size: 13px; letter-spacing: 1px">{{ r.stars }}</span>
+                <span style="font-size: 13px; font-weight: 600">{{ r.name }}</span>
+                <span style="font-size: 11px; color: #4a4a6a; font-family: monospace">{{ r.time }}</span>
+                <sc-if value="{{ r.hasLang }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family: monospace; font-size: 10px; color: #3ad6e0; border: 1px solid rgba(58,214,224,0.4); border-radius: 2px; padding: 2px 7px">🌐 {{ r.langNote }}</span>
+                </sc-if>
+                <span style="margin-left: auto; font-family: monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: {{ r.statusColor }}">{{ r.statusLabel }}</span>
+              </div>
+              <p style="font-size: 13px; color: #d0d0e8; line-height: 1.7; margin: 0 0 10px">{{ r.text }}</p>
+
+              <sc-if value="{{ r.isOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="border-top: 1px solid #28304a; padding-top: 12px; margin-top: 4px">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px">
+                    <span style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a">Draft reply · Tone</span>
+                    <sc-for list="{{ r.tones }}" as="t" hint-placeholder-count="3">
+                      <button onClick="{{ t.onClick }}" style="background: {{ t.bg }}; border: 1px solid {{ t.border }}; border-radius: 20px; color: {{ t.color }}; font-size: 11px; padding: 3px 10px; cursor: pointer; font-family: inherit">{{ t.label }}</button>
+                    </sc-for>
+                  </div>
+                  <textarea value="{{ r.draft }}" onChange="{{ r.onDraftChange }}" rows="3" style="width: 100%; background: #101526; border: 1px solid #28304a; border-radius: 8px; color: #e8e8f0; font-size: 13px; padding: 10px 12px; resize: vertical; font-family: inherit; outline: none; line-height: 1.6; box-sizing: border-box"></textarea>
+                  <div style="display: flex; gap: 8px; margin-top: 8px">
+                    <button onClick="{{ r.onSend }}" style="background: {{ accent }}; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 7px 16px; cursor: pointer; font-family: inherit">{{ r.sendLabel }}</button>
+                    <button onClick="{{ r.onClose }}" style="background: transparent; border: 1px solid #28304a; border-radius: 6px; color: #7a7a9a; font-size: 12px; padding: 7px 12px; cursor: pointer; font-family: inherit">Cancel</button>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ r.showActions }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; gap: 8px">
+                  <button onClick="{{ r.onOpen }}" style="background: rgba(108,99,255,0.12); border: 1px solid {{ accent }}; border-radius: 6px; color: {{ accent }}; font-family: monospace; font-size: 11px; font-weight: 600; padding: 5px 12px; cursor: pointer">✍ draft reply</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 24px; text-align: center">
+              <p style="color: #4a4a6a; font-size: 12px; margin: 0">Nothing here — all caught up. ✓</p>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- GET REVIEWS -->
+    <sc-if value="{{ showRequests }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Get reviews" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #43e97b)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(67,233,123,0.12); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">🚀</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Get Reviews</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">REQUEST ENGINE · INTERCEPTION</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px">
+          <sc-for list="{{ reqStats }}" as="s" hint-placeholder-count="3">
+            <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px">
+              <div style="font-size: 10px; font-family: monospace; color: #7a7a9a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px">{{ s.label }}</div>
+              <div style="font-size: 20px; font-weight: 700; color: {{ s.color }}">{{ s.value }}</div>
+              <div style="font-size: 11px; color: #4a4a6a; font-family: monospace; margin-top: 2px">{{ s.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Send review invites</div>
+        <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px; margin-bottom: 18px">
+          <div style="font-family: monospace; font-size: 10px; color: #4a4a6a; margin-bottom: 8px">AUTO-SEND TRIGGER: <span style="color: #3ad6e0">{{ inviteTrigger }}</span></div>
+          <div style="display: flex; gap: 6px; margin-bottom: 10px">
+            <sc-for list="{{ channels }}" as="c" hint-placeholder-count="3">
+              <button onClick="{{ c.onClick }}" style="background: {{ c.bg }}; border: 1px solid {{ c.border }}; border-radius: 20px; color: {{ c.color }}; font-size: 11px; padding: 4px 12px; cursor: pointer; font-family: inherit">{{ c.label }}</button>
+            </sc-for>
+          </div>
+          <textarea value="{{ inviteMsg }}" onChange="{{ onInviteChange }}" rows="2" style="width: 100%; background: #101526; border: 1px solid #28304a; border-radius: 8px; color: #e8e8f0; font-size: 13px; padding: 10px 12px; resize: vertical; font-family: inherit; outline: none; line-height: 1.6; box-sizing: border-box"></textarea>
+          <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px">
+            <button onClick="{{ onSendInvites }}" style="background: {{ accent }}; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 7px 16px; cursor: pointer; font-family: inherit">Send to 24 recent customers</button>
+            <sc-if value="{{ inviteFlash }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family: monospace; font-size: 11px; color: #43e97b">✓ queued</span>
+            </sc-if>
+            <span style="margin-left: auto; font-family: monospace; font-size: 10px; color: #4a4a6a">or print the counter QR code</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px">
+          <span style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a">Negative-review interception</span>
+          <button onClick="{{ onToggleIntercept }}" style="background: {{ interceptBg }}; border: 1px solid {{ interceptBorder }}; border-radius: 20px; color: {{ interceptColor }}; font-family: monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; cursor: pointer">{{ interceptLabel }}</button>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; margin-bottom: 18px">
+          <div style="flex: 1 1 180px; background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px; text-align: center">
+            <div style="font-size: 18px; margin-bottom: 4px">💬</div>
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px">"How was your visit?"</div>
+            <div style="font-size: 11px; color: #7a7a9a">every invite starts here</div>
+          </div>
+          <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px; flex: 1.4 1 240px">
+            <div style="display: flex; align-items: center; gap: 8px; background: rgba(67,233,123,0.08); border: 1px solid rgba(67,233,123,0.35); border-radius: 8px; padding: 9px 12px">
+              <span>😊</span>
+              <div style="flex: 1">
+                <div style="font-size: 12px; font-weight: 600; color: #43e97b">Happy → Google review page</div>
+                <div style="font-size: 10px; font-family: monospace; color: #4a4a6a">47 sent this month</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; background: rgba(255,101,132,0.07); border: 1px solid rgba(255,101,132,0.35); border-radius: 8px; padding: 9px 12px">
+              <span>😕</span>
+              <div style="flex: 1">
+                <div style="font-size: 12px; font-weight: 600; color: #ff6584">Unhappy → private feedback form</div>
+                <div style="font-size: 10px; font-family: monospace; color: #4a4a6a">11 caught before going public</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Private feedback · intercepted</div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{ intercepted }}" as="p" hint-placeholder-count="2">
+            <div style="display: flex; gap: 10px; padding: 10px 14px; background: #161c32; border-radius: 6px; border-left: 3px solid rgba(255,101,132,0.4)">
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 600; margin-bottom: 2px">{{ p.name }} <span style="font-family: monospace; font-size: 10px; color: #4a4a6a; font-weight: 400">{{ p.time }}</span></div>
+                <div style="font-size: 12px; color: #a0a0c8; line-height: 1.6">{{ p.text }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- RANK -->
+    <sc-if value="{{ showRank }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Rank" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #f4c55a)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(244,197,90,0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">📍</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Map Pack Rank</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">LOCAL SEARCH · 1 MI RADIUS</div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px">
+          <sc-for list="{{ rankRows }}" as="kw" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #161c32; border: 1px solid #28304a; border-radius: 8px; flex-wrap: wrap">
+              <span style="font-family: monospace; font-size: 12px; color: #d0d0e8; flex: 1 1 160px">"{{ kw.keyword }}"</span>
+              <span style="font-family: monospace; font-size: 13px; font-weight: 700; color: {{ kw.rankColor }}; min-width: 32px">#{{ kw.rank }}</span>
+              <span style="font-family: monospace; font-size: 11px; color: {{ kw.deltaColor }}; min-width: 36px">{{ kw.delta }}</span>
+              <span style="font-size: 11px; color: #7a7a9a; flex: 1.4 1 200px">#1 is {{ kw.leader }} · {{ kw.leaderNote }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Review velocity vs #1 competitor</div>
+        <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+            <span style="font-family: monospace; font-size: 11px; color: #d0d0e8; min-width: 120px">{{ businessName }}</span>
+            <div style="flex: 1; height: 10px; background: #101526; border-radius: 5px; overflow: hidden"><div style="width: 42%; height: 100%; background: {{ accent }}"></div></div>
+            <span style="font-family: monospace; font-size: 11px; color: {{ accent }}; min-width: 52px">9 / mo</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="font-family: monospace; font-size: 11px; color: #7a7a9a; min-width: 120px">{{ rivalName }}</span>
+            <div style="flex: 1; height: 10px; background: #101526; border-radius: 5px; overflow: hidden"><div style="width: 88%; height: 100%; background: #ff9f5a"></div></div>
+            <span style="font-family: monospace; font-size: 11px; color: #ff9f5a; min-width: 52px">{{ rivalRate }}</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; padding: 10px 14px; background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.35); border-radius: 8px; align-items: center">
+          <span>💡</span>
+          <span style="font-size: 12px; color: #a0a0c8; line-height: 1.6">You need ~10 more reviews/month to match the leader's velocity. <a href="#" style="color: {{ accent }}">Send invites from Get reviews →</a></span>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SHARE -->
+    <sc-if value="{{ showShare }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Share" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #c084fc)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(192,132,252,0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">📣</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Turn 5★ reviews into posts</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">SOCIAL CARD GENERATOR · INSTAGRAM & FACEBOOK</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+          <sc-for list="{{ shareables }}" as="sh" hint-placeholder-count="3">
+            <div style="background: #161c32; border: 1px solid #28304a; border-radius: 10px; overflow: hidden">
+              <div style="aspect-ratio: 1 / 1; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background: {{ sh.cardBg }}; position: relative">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <div style="width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 13px">💬</div>
+                  <span style="font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.5px">{{ businessName }}</span>
+                </div>
+                <div>
+                  <div style="color: #ffe08a; font-size: 20px; letter-spacing: 3px; margin-bottom: 12px">★★★★★</div>
+                  <p style="font-size: 18px; line-height: 1.45; color: #fff; font-weight: 600; margin: 0">"{{ sh.quote }}"</p>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.75); font-family: monospace">— {{ sh.name }} · {{ sh.platform }}</div>
+              </div>
+              <div style="padding: 14px 16px">
+                <div style="font-size: 11px; color: #7a7a9a; line-height: 1.6; margin-bottom: 10px">{{ sh.caption }}</div>
+                <div style="display: flex; gap: 8px">
+                  <button onClick="{{ sh.onCopy }}" style="flex: 1; background: rgba(108,99,255,0.12); border: 1px solid {{ accent }}; border-radius: 6px; color: {{ accent }}; font-family: monospace; font-size: 11px; font-weight: 600; padding: 7px 10px; cursor: pointer">{{ sh.copyLabel }}</button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- INSIGHTS -->
+    <sc-if value="{{ showInsights }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Insights" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #3ad6e0)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(58,214,224,0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">📊</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Reputation Insights</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">LAST 30 DAYS</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+            <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 12px 14px">
+              <div style="font-size: 10px; font-family: monospace; color: #7a7a9a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px">{{ s.label }}</div>
+              <div style="font-size: 20px; font-weight: 700; color: {{ s.color }}">{{ s.value }}</div>
+              <div style="font-size: 11px; color: #4a4a6a; font-family: monospace; margin-top: 2px">{{ s.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Rating trend · 8 weeks</div>
+        <div style="display: flex; align-items: flex-end; gap: 8px; height: 90px; background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px 10px; margin-bottom: 18px">
+          <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="8">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end">
+              <div style="width: 100%; max-width: 34px; height: {{ w.height }}; background: {{ w.color }}; border-radius: 3px 3px 0 0; opacity: 0.85"></div>
+              <span style="font-family: monospace; font-size: 9px; color: #4a4a6a">{{ w.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Sentiment</div>
+        <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 8px">
+          <div style="width: 68%; background: #43e97b"></div>
+          <div style="width: 18%; background: #f4c55a"></div>
+          <div style="width: 14%; background: #ff6584"></div>
+        </div>
+        <div style="display: flex; gap: 14px; margin-bottom: 18px">
+          <span style="font-family: monospace; font-size: 11px; color: #43e97b">■ 68% positive</span>
+          <span style="font-family: monospace; font-size: 11px; color: #f4c55a">■ 18% neutral</span>
+          <span style="font-family: monospace; font-size: 11px; color: #ff6584">■ 14% negative</span>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">What customers mention</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px">
+          <sc-for list="{{ keywords }}" as="k" hint-placeholder-count="6">
+            <span style="background: #161c32; border: 1px solid #28304a; border-radius: 20px; color: {{ k.color }}; font-size: 12px; padding: 5px 12px; font-family: monospace">{{ k.label }}</span>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(67,233,123,0.1), rgba(67,233,123,0.02)); border: 1px solid rgba(67,233,123,0.35); border-radius: 8px; padding: 14px 16px; margin-bottom: 18px">
+          <span style="font-size: 20px">💰</span>
+          <div style="flex: 1">
+            <div style="font-family: monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 2px">Estimated revenue impact</div>
+            <div style="font-size: 13px; color: #d0d0e8">Your +0.3★ this month is worth roughly <span style="color: #43e97b; font-weight: 700">{{ revenueImpact }}</span> in extra monthly bookings — a 0.1★ swing shifts local click-through by several points.</div>
+          </div>
+        </div>
+
+        <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #7a7a9a; margin-bottom: 10px">Staff leaderboard · mentioned by name</div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{ staff }}" as="s" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #161c32; border: 1px solid #28304a; border-radius: 8px">
+              <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(108,99,255,0.15); border: 1px solid {{ accent }}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: {{ accent }}; flex-shrink: 0">{{ s.initials }}</div>
+              <span style="font-size: 13px; font-weight: 600; flex: 1 1 120px">{{ s.name }}</span>
+              <span style="font-family: monospace; font-size: 11px; color: #7a7a9a">{{ s.count }} mentions</span>
+              <span style="color: #f4c55a; font-size: 12px; letter-spacing: 1px">{{ s.stars }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SETUP -->
+    <sc-if value="{{ showSetup }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Setup" style="background: #101526; border: 1px solid #28304a; border-radius: 12px; padding: 20px 22px; position: relative; overflow: hidden">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, {{ accent }}, #3ad6e0)"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #28304a">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(108,99,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0">⚙️</div>
+          <div style="flex: 1">
+            <div style="font-weight: 600; font-size: 14px">Setup</div>
+            <div style="font-size: 10px; color: #7a7a9a; font-family: monospace; letter-spacing: 1px">{{ setupProgressLabel }}</div>
+          </div>
+        </div>
+
+        <div style="height: 4px; background: #161c32; border-radius: 2px; overflow: hidden; margin-bottom: 18px">
+          <div style="height: 100%; width: {{ setupProgressPct }}; background: linear-gradient(90deg, {{ accent }}, #43e97b); transition: width 0.4s ease"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+
+          <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px">
+              <span style="font-family: monospace; font-size: 11px; font-weight: 700; color: #43e97b">✓ STEP 1</span>
+              <span style="font-size: 13px; font-weight: 600">What kind of business is {{ businessName }}?</span>
+            </div>
+            <div style="font-size: 11px; color: #4a4a6a; margin-bottom: 10px">This tunes your platforms, invite timing, reply tone and tracked keywords.</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <sc-for list="{{ verticalPills }}" as="v" hint-placeholder-count="5">
+                <button onClick="{{ v.onClick }}" style="background: {{ v.bg }}; border: 1px solid {{ v.border }}; border-radius: 20px; color: {{ v.color }}; font-size: 12px; padding: 6px 14px; cursor: pointer; font-family: inherit">{{ v.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+              <span style="font-family: monospace; font-size: 11px; font-weight: 700; color: {{ step1Color }}">{{ step1Mark }} STEP 2</span>
+              <span style="font-size: 13px; font-weight: 600">Connect your review platforms</span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <sc-for list="{{ vertPlatforms }}" as="vp" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 6px; background: rgba(67,233,123,0.08); border: 1px solid rgba(67,233,123,0.4); border-radius: 20px; padding: 5px 13px; font-size: 12px; color: #43e97b">✓ {{ vp }}</div>
+              </sc-for>
+              <sc-if value="{{ fbConnected }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 6px; background: rgba(67,233,123,0.08); border: 1px solid rgba(67,233,123,0.4); border-radius: 20px; padding: 5px 13px; font-size: 12px; color: #43e97b">✓ Facebook</div>
+              </sc-if>
+              <sc-if value="{{ fbNotConnected }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ onConnectFb }}" style="background: rgba(108,99,255,0.12); border: 1px solid {{ accent }}; border-radius: 20px; color: {{ accent }}; font-size: 12px; padding: 5px 13px; cursor: pointer; font-family: inherit">Connect Facebook</button>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+              <span style="font-family: monospace; font-size: 11px; font-weight: 700; color: {{ step2Color }}">{{ step2Mark }} STEP 3</span>
+              <span style="font-size: 13px; font-weight: 600">Import your review history</span>
+            </div>
+            <sc-if value="{{ notImported }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ onImport }}" style="background: {{ accent }}; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 7px 16px; cursor: pointer; font-family: inherit">Import 214 reviews found</button>
+            </sc-if>
+            <sc-if value="{{ imported }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family: monospace; font-size: 12px; color: #43e97b">✓ 214 reviews imported · sentiment analyzed</span>
+            </sc-if>
+          </div>
+
+          <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; padding: 14px 16px">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+              <span style="font-family: monospace; font-size: 11px; font-weight: 700; color: {{ step3Color }}">{{ step3Mark }} STEP 4</span>
+              <span style="font-size: 13px; font-weight: 600">Where should urgent alerts go?</span>
+            </div>
+            <sc-if value="{{ phoneNotSaved }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <input value="{{ phone }}" onChange="{{ onPhoneChange }}" placeholder="+1 (555) 000-0000" style="flex: 1 1 200px; background: #101526; border: 1px solid #28304a; border-radius: 6px; color: #e8e8f0; font-size: 13px; padding: 8px 12px; font-family: inherit; outline: none; box-sizing: border-box"></input>
+                <button onClick="{{ onSavePhone }}" style="background: {{ accent }}; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 8px 16px; cursor: pointer; font-family: inherit">Save</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ phoneSaved }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family: monospace; font-size: 12px; color: #43e97b">✓ SMS alerts → {{ phone }}</span>
+            </sc-if>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;businessName&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Luna Coffee Roasters&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#6c63ff&quot;, &quot;options&quot;: [&quot;#6c63ff&quot;, &quot;#e3b341&quot;, &quot;#2fe6a8&quot;, &quot;#7cc4ff&quot;, &quot;#ff6584&quot;, &quot;#c084fc&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    tab: "inbox",
+    filter: "all",
+    openId: null,
+    tone: "Warm",
+    drafts: {},
+    replied: {},
+    alertsOn: true,
+    intercept: true,
+    channel: "SMS",
+    inviteMsg: "Thanks for stopping by Luna Coffee Roasters! Got 30 seconds to tell us how it went? {link}",
+    inviteFlash: false,
+    fbConnected: false,
+    imported: false,
+    phone: "",
+    phoneSaved: false,
+    vertical: "cafe",
+  };
+
+  verticals() {
+    return [
+      { id: "cafe", label: "☕ Café & restaurant", platforms: ["Google Business Profile", "Yelp", "Tripadvisor", "Instagram"], trigger: "2 hours after checkout", rival: "Verve Coffee", rivalRate: "19 / mo",
+        revenueImpact: "$600–900",
+        shareables: [
+          { quote: "Best flat white in the neighborhood, hands down.", name: "Deniz K.", platform: "Yelp", cardBg: "linear-gradient(135deg, #6c63ff, #3a2f8f)", caption: "Caption: \"Deniz said it best \u2615\ufe0f Come find out why. Link in bio to book a table.\" #LocalCoffee" },
+          { quote: "The baristas remember my order and my name.", name: "Priya S.", platform: "Google", cardBg: "linear-gradient(135deg, #ff9f5a, #ff6584)", caption: "Caption: \"This is why we do it \u2764\ufe0f Thank you Priya! Tag someone who needs their coffee order remembered.\"" },
+          { quote: "Cozy space and great pastries.", name: "Jonah P.", platform: "Google", cardBg: "linear-gradient(135deg, #2fe6a8, #1a8f6a)", caption: "Caption: \"Cozy corner, warm pastries, your new Tuesday spot. \ud83e\udd50\"" },
+        ],
+        staff: [
+          { name: "Youssef (barista)", initials: "YB", count: 14, stars: "★★★★★" },
+          { name: "Amira (counter)", initials: "AC", count: 9, stars: "★★★★★" },
+          { name: "Sami (roaster)", initials: "SR", count: 5, stars: "★★★★☆" },
+        ],
+        rankRows: [
+          { keyword: "coffee near me", rank: 4, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Verve Coffee", leaderNote: "2.1× your review velocity" },
+          { keyword: "best latte downtown", rank: 2, rankColor: "#43e97b", delta: "—", deltaColor: "#4a4a6a", leader: "Verve Coffee", leaderNote: "38 more reviews than you" },
+          { keyword: "coffee shop wifi", rank: 7, rankColor: "#ff6584", delta: "▼ 2", deltaColor: "#ff6584", leader: "Grind House", leaderNote: "mentions 'wifi' in 12 reviews" },
+        ] },
+      { id: "barber", label: "💈 Barber & beauty", platforms: ["Google Business Profile", "Booksy", "Fresha", "Instagram"], trigger: "30 min after the appointment ends", rival: "Kings Cuts", rivalRate: "14 / mo",
+        revenueImpact: "$900–1,400",
+        shareables: [
+          { quote: "Karim gave me the best fade I've had in years.", name: "Yassine T.", platform: "Google", cardBg: "linear-gradient(135deg, #6c63ff, #2b2467)", caption: "Caption: \"Fresh cuts, happy clients \ud83d\udc88 Book with Karim \u2014 link in bio.\"" },
+          { quote: "Lina's color work is unreal, exactly what I asked for.", name: "Sara M.", platform: "Instagram", cardBg: "linear-gradient(135deg, #ff6584, #b23a56)", caption: "Caption: \"Color goals \u2728 Ask for Lina at your next visit.\"" },
+        ],
+        staff: [
+          { name: "Karim (senior barber)", initials: "KB", count: 22, stars: "★★★★★" },
+          { name: "Lina (color specialist)", initials: "LC", count: 16, stars: "★★★★★" },
+          { name: "Yassine (junior barber)", initials: "YJ", count: 6, stars: "★★★★☆" },
+        ],
+        rankRows: [
+          { keyword: "barber near me", rank: 3, rankColor: "#f4c55a", delta: "▲ 2", deltaColor: "#43e97b", leader: "Kings Cuts", leaderNote: "1.6× your review velocity" },
+          { keyword: "best fade downtown", rank: 1, rankColor: "#43e97b", delta: "—", deltaColor: "#4a4a6a", leader: "you", leaderNote: "defend it — #2 is 12 reviews behind" },
+          { keyword: "beard trim", rank: 5, rankColor: "#ff6584", delta: "▼ 1", deltaColor: "#ff6584", leader: "Kings Cuts", leaderNote: "mentions 'beard' in 9 reviews" },
+        ] },
+      { id: "shop", label: "🛍️ Shop & retail", platforms: ["Google Business Profile", "Facebook", "Trustpilot"], trigger: "1 day after purchase", rival: "Maison Nour", rivalRate: "11 / mo",
+        revenueImpact: "$400–700",
+        shareables: [
+          { quote: "A shop with so much charm — I bought a handmade bag and loved the story behind it.", name: "Carmen L.", platform: "Google", cardBg: "linear-gradient(135deg, #e3b341, #8a5a12)", caption: "Caption: \"Every piece has a story \ud83d\udc9b Thank you Carmen! Shop the collection \u2014 link in bio.\"" },
+        ],
+        staff: [
+          { name: "Nadia (owner)", initials: "NO", count: 11, stars: "★★★★★" },
+          { name: "Reda (sales)", initials: "RS", count: 4, stars: "★★★★☆" },
+        ],
+        rankRows: [
+          { keyword: "gift shop near me", rank: 4, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Maison Nour", leaderNote: "1.3× your review velocity" },
+          { keyword: "boutique downtown", rank: 2, rankColor: "#43e97b", delta: "▲ 3", deltaColor: "#43e97b", leader: "Maison Nour", leaderNote: "21 more reviews than you" },
+          { keyword: "handmade jewelry", rank: 6, rankColor: "#ff6584", delta: "—", deltaColor: "#4a4a6a", leader: "Atelier Mina", leaderNote: "mentions 'handmade' in 15 reviews" },
+        ] },
+      { id: "fitness", label: "🧘 Fitness & spa", platforms: ["Google Business Profile", "Mindbody", "ClassPass", "Treatwell"], trigger: "after their 3rd visit", rival: "CorePower Studio", rivalRate: "22 / mo",
+        revenueImpact: "$1,200–1,800",
+        shareables: [
+          { quote: "Sofia pushed me further than I thought I could go, in the best way.", name: "Nora H.", platform: "Google", cardBg: "linear-gradient(135deg, #2fe6a8, #14614a)", caption: "Caption: \"Stronger every week \ud83d\udcaa Book a session with Sofia \u2014 link in bio.\"" },
+          { quote: "Marc's massage fixed a knot in my shoulder that's been there for months.", name: "Ali R.", platform: "Treatwell", cardBg: "linear-gradient(135deg, #7cc4ff, #2b5c8f)", caption: "Caption: \"Relief you can feel \u2728 Ask for Marc at your next visit.\"" },
+        ],
+        staff: [
+          { name: "Sofia (lead trainer)", initials: "ST", count: 27, stars: "★★★★★" },
+          { name: "Marc (massage therapist)", initials: "MT", count: 19, stars: "★★★★★" },
+          { name: "Ines (front desk)", initials: "IF", count: 8, stars: "★★★★☆" },
+        ],
+        rankRows: [
+          { keyword: "gym near me", rank: 6, rankColor: "#ff6584", delta: "▼ 1", deltaColor: "#ff6584", leader: "CorePower Studio", leaderNote: "2.4× your review velocity" },
+          { keyword: "day spa", rank: 3, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Serenity Spa", leaderNote: "44 more reviews than you" },
+          { keyword: "massage downtown", rank: 4, rankColor: "#f4c55a", delta: "—", deltaColor: "#4a4a6a", leader: "Serenity Spa", leaderNote: "mentions 'massage' in 31 reviews" },
+        ] },
+      { id: "club", label: "🍸 Bar & club", platforms: ["Google Business Profile", "Instagram", "Facebook"], trigger: "next morning at 11:00", rival: "Sky Lounge", rivalRate: "16 / mo",
+        revenueImpact: "$1,500–2,300",
+        shareables: [
+          { quote: "Karim's cocktails are next level — best rooftop in the city.", name: "Farah D.", platform: "Instagram", cardBg: "linear-gradient(135deg, #c084fc, #5c2b8f)", caption: "Caption: \"Best seat in the city \ud83c\udf78 See you this weekend \u2014 link in bio to reserve.\"" },
+        ],
+        staff: [
+          { name: "Karim (head bartender)", initials: "KH", count: 18, stars: "★★★★★" },
+          { name: "Dounia (DJ booking)", initials: "DD", count: 7, stars: "★★★★☆" },
+        ],
+        rankRows: [
+          { keyword: "rooftop bar", rank: 2, rankColor: "#43e97b", delta: "▲ 1", deltaColor: "#43e97b", leader: "Sky Lounge", leaderNote: "1.8× your review velocity" },
+          { keyword: "clubs downtown", rank: 5, rankColor: "#ff6584", delta: "▼ 2", deltaColor: "#ff6584", leader: "Velvet Room", leaderNote: "posts events daily on Instagram" },
+          { keyword: "cocktail bar near me", rank: 3, rankColor: "#f4c55a", delta: "—", deltaColor: "#4a4a6a", leader: "Sky Lounge", leaderNote: "29 more reviews than you" },
+        ] },
+    ];
+  }
+
+  currentVertical() {
+    return this.verticals().find((v) => v.id === this.state.vertical) || this.verticals()[0];
+  }
+
+  data() {
+    const v = this.state.vertical;
+    if (v === "barber") return [
+      { id: "b1", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Yassine E.", time: "3h ago", sentiment: "pos", text: "Walked in without an appointment on a Saturday and Karim still squeezed me in. Cleanest fade I've had in years, honestly." },
+      { id: "b2", platform: "Booksy", pc: "#3ad6e0", rating: 2, name: "Marcus D.", time: "7h ago", sentiment: "neg", text: "Second time my 6pm slot started at 6:40. The cut itself is good, but I book ahead for a reason. Not sure I'll be back." },
+      { id: "b3", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Omar R.", time: "1d ago", sentiment: "pos", lang: "AR", text: "أفضل حلاق في الحي، دقيق في التفاصيل والاستقبال دائماً محترم. أنصح به بشدة." },
+      { id: "b4", platform: "Fresha", pc: "#6c63ff", rating: 4, name: "Théo L.", time: "2d ago", sentiment: "pos", lang: "FR", text: "Très bon dégradé, ambiance sympa. Juste un peu d'attente même avec réservation." },
+      { id: "b5", platform: "Google", pc: "#3ad6e0", rating: 1, name: "Jake P.", time: "3d ago", sentiment: "neg", text: "Asked for a light trim, walked out with half my beard gone. Guy barely listened to what I wanted." },
+      { id: "b6", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Sofia M.", time: "4d ago", sentiment: "pos", replied: true, text: "Took my son for his first haircut and they were so patient with him. The little certificate at the end was a cute touch." },
+    ];
+    if (v === "shop") return [
+      { id: "s1", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Hannah G.", time: "4h ago", sentiment: "pos", text: "Found the perfect gift in five minutes because the owner actually asked who it was for. Wrapped it beautifully too, no charge." },
+      { id: "s2", platform: "Trustpilot", pc: "#43e97b", rating: 2, name: "K. Osman", time: "8h ago", sentiment: "neg", text: "Ordered online for pickup, got there and the item had been sold to someone else. Offered a refund but no real apology." },
+      { id: "s3", platform: "Google", pc: "#3ad6e0", rating: 4, name: "Marta S.", time: "1d ago", sentiment: "pos", text: "Lovely little shop, fair prices. Gets crowded on Saturdays so go early." },
+      { id: "s4", platform: "Facebook", pc: "#6c63ff", rating: 5, name: "Rachida B.", time: "2d ago", sentiment: "pos", lang: "FR", text: "Boutique magnifique, des pièces qu'on ne trouve nulle part ailleurs. La propriétaire est adorable." },
+      { id: "s5", platform: "Trustpilot", pc: "#43e97b", rating: 3, name: "Dana W.", time: "3d ago", sentiment: "neu", text: "Beautiful things but the card machine has been \"down\" twice now. Cash only feels strange in 2026." },
+      { id: "s7", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Carmen L.", time: "4d ago", sentiment: "pos", lang: "ES", text: "Una tienda con muchísimo encanto. Compré un bolso hecho a mano y la dueña me contó la historia de la artesana que lo hizo." },
+      { id: "s6", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Leo V.", time: "5d ago", sentiment: "pos", replied: true, text: "Bought a ring here last month, the band snapped, they fixed it same day for free. That's how you keep customers." },
+    ];
+    if (v === "fitness") return [
+      { id: "f1", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Nora H.", time: "2h ago", sentiment: "pos", text: "The 7am spin class is the only reason I get out of bed. Instructors know everyone's name." },
+      { id: "f2", platform: "ClassPass", pc: "#f4c55a", rating: 2, name: "Tim B.", time: "6h ago", sentiment: "neg", text: "Showers were cold again this week and two treadmills still \"out of order\". Paying premium prices for this." },
+      { id: "f3", platform: "Mindbody", pc: "#ff9f5a", rating: 4, name: "Aya K.", time: "1d ago", sentiment: "pos", lang: "FR", text: "Très bon studio, cours de yoga excellents. Le vestiaire mériterait un petit rafraîchissement." },
+      { id: "f4", platform: "Google", pc: "#3ad6e0", rating: 1, name: "Derek M.", time: "2d ago", sentiment: "neg", text: "Signed up on a promo, cancelling took three emails and a phone call. Gym itself is fine, the admin is a nightmare." },
+      { id: "f5", platform: "Treatwell", pc: "#ff6584", rating: 5, name: "Lina S.", time: "3d ago", sentiment: "pos", replied: true, text: "The deep tissue massage with Yousra fixed a shoulder that's bothered me for months." },
+      { id: "f6", platform: "Google", pc: "#3ad6e0", rating: 4, name: "Paul C.", time: "4d ago", sentiment: "pos", text: "Solid equipment, never too crowded after 8pm. Wifi in the lounge is patchy." },
+    ];
+    if (v === "club") return [
+      { id: "c1", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Maya R.", time: "10h ago", sentiment: "pos", text: "Rooftop at sunset is unreal. Cocktails on the pricey side but honestly worth it for the view." },
+      { id: "c2", platform: "Google", pc: "#3ad6e0", rating: 2, name: "Anthony J.", time: "1d ago", sentiment: "neg", text: "Waited 45 minutes at the door with a reservation while promoters walked their groups straight in. Inside was great — the door situation ruined the night." },
+      { id: "c3", platform: "Facebook", pc: "#6c63ff", rating: 4, name: "Selim T.", time: "2d ago", sentiment: "pos", lang: "FR", text: "Très belle soirée, DJ excellent. Le service au bar était un peu lent vers minuit." },
+      { id: "c4", platform: "Google", pc: "#3ad6e0", rating: 1, name: "Priti N.", time: "3d ago", sentiment: "neg", text: "Got charged for a bottle we never ordered. Still waiting on the refund a week later." },
+      { id: "c5", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Jonas F.", time: "4d ago", sentiment: "pos", replied: true, text: "Birthday table was sorted perfectly, staff brought the cake out exactly at midnight like we asked." },
+    ];
+    return [
+      { id: 1, platform: "Google", pc: "#3ad6e0", rating: 2, name: "Mara T.", time: "2h ago", sentiment: "neg", text: "Waited 25 minutes for a latte on a quiet Tuesday. Staff were friendly but clearly understaffed. The coffee itself was great, which makes the wait more frustrating." },
+      { id: 2, platform: "Yelp", pc: "#ff6584", rating: 5, name: "Deniz K.", time: "5h ago", sentiment: "pos", text: "Best flat white in the neighborhood, hands down. The rotating single-origin menu keeps me coming back every week." },
+      { id: 9, platform: "Tripadvisor", pc: "#34e0a1", rating: 5, name: "Amine B.", time: "9h ago", sentiment: "pos", lang: "FR", text: "Un accueil chaleureux et un espresso parfait. Le personnel est adorable — on reviendra à chaque visite dans le quartier !" },
+      { id: 3, platform: "Google", pc: "#3ad6e0", rating: 4, name: "Jonah P.", time: "1d ago", sentiment: "pos", text: "Cozy space and great pastries. Wifi dropped a couple of times while I was working, otherwise perfect." },
+      { id: 4, platform: "Facebook", pc: "#6c63ff", rating: 1, name: "R. Alvarez", time: "1d ago", sentiment: "neg", text: "Ordered a birthday cake pickup and it wasn't ready at the promised time. Had to wait 40 minutes with guests arriving. Really disappointed." },
+      { id: 5, platform: "Google", pc: "#3ad6e0", rating: 5, name: "Priya S.", time: "2d ago", sentiment: "pos", replied: true, text: "The baristas remember my order and my name. Little things like that make this my favorite spot in the city." },
+      { id: 6, platform: "Yelp", pc: "#ff6584", rating: 3, name: "Tom W.", time: "3d ago", sentiment: "neu", text: "Good coffee, but seating is limited on weekends. Would love more outdoor tables in summer." },
+      { id: 7, platform: "Google", pc: "#3ad6e0", rating: 5, name: "Lena M.", time: "4d ago", sentiment: "pos", replied: true, text: "Their oat milk cortado is unreal. Also appreciate the compostable cups!" },
+      { id: 8, platform: "Facebook", pc: "#6c63ff", rating: 4, name: "Sam O.", time: "5d ago", sentiment: "pos", text: "Great vibe for meetings. Music volume is just right. Espresso could be a touch hotter." },
+    ];
+  }
+
+  makeDraft(r, tone) {
+    const name = r.name.split(" ")[0];
+    const biz = this.props.businessName ?? "Luna Coffee Roasters";
+    if (r.lang === "FR") {
+      if (tone === "Professional") return `Bonjour ${name}, merci pour votre retour. Toute l'équipe de ${biz} a été ravie de vous accueillir. Au plaisir de vous revoir.`;
+      if (tone === "Brief") return `Merci ${name}, à très vite.`;
+      return `Bonjour ${name}, merci beaucoup — votre message a fait plaisir à toute l'équipe. Vous avez raison pour l'attente, on travaille dessus. À bientôt.`;
+    }
+    if (r.lang === "ES") {
+      if (tone === "Professional") return `Hola ${name}, muchas gracias por tus palabras. Nos alegra que fuera una buena visita — te esperamos pronto.`;
+      if (tone === "Brief") return `¡Gracias ${name} — hasta pronto!`;
+      return `Hola ${name}, tu reseña nos alegró el día a todo el equipo — gracias de verdad. Nos vemos en la próxima.`;
+    }
+    if (r.lang === "AR") {
+      if (tone === "Professional") return `شكراً جزيلاً ${name} على كلماتك الطيبة. سعدنا بزيارتك ونتطلع لاستقبالك مجدداً.`;
+      if (tone === "Brief") return `شكراً ${name} — نراك قريباً.`;
+      return `أهلاً ${name}، كلماتك أسعدت الفريق كله، شكراً من القلب. ننتظر زيارتك القادمة.`;
+    }
+    if (r.sentiment === "neg") {
+      if (tone === "Professional") return `Hi ${name}, thank you for the feedback. This falls short of the standard we hold ourselves to at ${biz}. We've reviewed what went wrong and would like to make it right — please reach out to us directly.`;
+      if (tone === "Brief") return `Hi ${name} — fair criticism, and we're fixing it. We'd like the chance to make it right.`;
+      return `Hi ${name} — I'm sorry, that's on us. Thanks for telling us straight instead of just not coming back. Next time you're in, ask for me and I'll make sure it goes right.`;
+    }
+    if (r.sentiment === "neu") {
+      if (tone === "Professional") return `Hi ${name}, thank you for the balanced feedback. The point you raised is fair and it's being worked on.`;
+      if (tone === "Brief") return `Thanks ${name} — fair point, we're on it.`;
+      return `Hi ${name}, thanks for keeping it honest — you're right, and it's already on our list. Hope we can earn that last star from you next time.`;
+    }
+    if (tone === "Professional") return `Hi ${name}, thank you for the kind words. We're glad it was a good visit, and we look forward to the next one.`;
+    if (tone === "Brief") return `Thanks ${name} — see you soon.`;
+    return `Hi ${name}, this genuinely made our week. Thanks for taking the minute to write it — see you next time.`;
+  }
+
+  setupVals(accent, tab) {
+    const { fbConnected, imported, phoneSaved, phone } = this.state;
+    const done = 1 + [fbConnected, imported, phoneSaved].filter(Boolean).length;
+    const vert = this.currentVertical();
+    const st = tab === "setup"
+      ? { bg: accent, border: accent, color: "#fff" }
+      : { bg: "#101526", border: "#28304a", color: "#7a7a9a" };
+    const mark = (d) => (d ? "✓" : "○");
+    const col = (d) => (d ? "#43e97b" : "#7a7a9a");
+    return {
+      goSetup: () => this.setState({ tab: "setup" }),
+      showSetup: tab === "setup",
+      setupTabBg: st.bg, setupTabBorder: st.border, setupTabColor: st.color,
+      setupBadge: done === 4 ? "✓" : done + "/4",
+      setupProgressLabel: done === 4 ? "ALL SET — YOU'RE LIVE" : done + " OF 4 COMPLETE",
+      setupProgressPct: Math.round((done / 4) * 100) + "%",
+      verticalPills: this.verticals().map((v) => ({
+        label: v.label,
+        bg: v.id === this.state.vertical ? "rgba(108,99,255,0.18)" : "transparent",
+        border: v.id === this.state.vertical ? accent : "#28304a",
+        color: v.id === this.state.vertical ? accent : "#a0a0c8",
+        onClick: () => this.setState({ vertical: v.id }),
+      })),
+      vertPlatforms: vert.platforms.filter((p) => p !== "Facebook"),
+      step1Mark: mark(fbConnected), step1Color: col(fbConnected),
+      step2Mark: mark(imported), step2Color: col(imported),
+      step3Mark: mark(phoneSaved), step3Color: col(phoneSaved),
+      fbConnected, fbNotConnected: !fbConnected,
+      onConnectFb: () => this.setState({ fbConnected: true }),
+      imported, notImported: !imported,
+      onImport: () => this.setState({ imported: true }),
+      phone,
+      onPhoneChange: (e) => this.setState({ phone: e.target.value }),
+      phoneSaved, phoneNotSaved: !phoneSaved,
+      onSavePhone: () => { if (this.state.phone.trim()) this.setState({ phoneSaved: true }); },
+    };
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? "#6c63ff";
+    const { tab, filter, openId, drafts, replied } = this.state;
+    const all = this.data();
+
+    const isReplied = (r) => replied[r.id] || r.replied;
+    const filtered = all.filter((r) => {
+      if (filter === "needs") return !isReplied(r);
+      if (filter === "neg") return r.sentiment === "neg";
+      if (filter === "replied") return isReplied(r);
+      return true;
+    });
+
+    const tones = ["Warm", "Professional", "Brief"];
+    const starStr = (n) => "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n);
+
+    const reviews = filtered.map((r) => {
+      const rep = isReplied(r);
+      const open = openId === r.id;
+      const curTone = this.state.tone;
+      const draft = drafts[r.id] !== undefined ? drafts[r.id] : this.makeDraft(r, curTone);
+      return {
+        platform: r.platform,
+        platformColor: r.pc,
+        stars: starStr(r.rating),
+        name: r.name,
+        time: r.time,
+        text: r.text,
+        hasLang: !!r.lang,
+        langNote: r.lang ? r.lang + " · auto-detected" : "",
+        cardBorder: r.sentiment === "neg" && !rep ? "rgba(255,101,132,0.45)" : "#28304a",
+        statusColor: rep ? "#43e97b" : "#ff6584",
+        statusLabel: rep ? "✓ REPLIED" : "NEEDS REPLY",
+        sendLabel: r.platform === "Tripadvisor" ? "Copy & open Tripadvisor" : "Send reply",
+        isOpen: open,
+        showActions: !rep && !open,
+        draft,
+        onOpen: () => this.setState({ openId: r.id }),
+        onClose: () => this.setState({ openId: null }),
+        onDraftChange: (e) => this.setState((s) => ({ drafts: { ...s.drafts, [r.id]: e.target.value } })),
+        onSend: () => this.setState((s) => ({ replied: { ...s.replied, [r.id]: true }, openId: null })),
+        tones: tones.map((t) => ({
+          label: t,
+          bg: t === curTone ? "rgba(108,99,255,0.18)" : "transparent",
+          border: t === curTone ? accent : "#28304a",
+          color: t === curTone ? accent : "#7a7a9a",
+          onClick: () => this.setState((s) => {
+            const d = { ...s.drafts };
+            delete d[r.id];
+            return { tone: t, drafts: d };
+          }),
+        })),
+      };
+    });
+
+    const filterDefs = [
+      { id: "all", label: "All" },
+      { id: "needs", label: "Needs reply" },
+      { id: "neg", label: "Negative" },
+      { id: "replied", label: "Replied" },
+    ];
+    const filters = filterDefs.map((f) => ({
+      label: f.label,
+      bg: filter === f.id ? "rgba(108,99,255,0.18)" : "#161c32",
+      border: filter === f.id ? accent : "#28304a",
+      color: filter === f.id ? accent : "#a0a0c8",
+      onClick: () => this.setState({ filter: f.id, openId: null }),
+    }));
+
+    const tabStyle = (active) => ({
+      bg: active ? accent : "#101526",
+      border: active ? accent : "#28304a",
+      color: active ? "#fff" : "#7a7a9a",
+    });
+    const it = tabStyle(tab === "inbox");
+    const gt = tabStyle(tab === "insights");
+    const rq = tabStyle(tab === "requests");
+    const rk = tabStyle(tab === "rank");
+    const sh = tabStyle(tab === "share");
+
+    const channels = ["WhatsApp", "SMS", "Email", "QR card"].map((c) => ({
+      label: c,
+      bg: this.state.channel === c ? "rgba(108,99,255,0.18)" : "transparent",
+      border: this.state.channel === c ? accent : "#28304a",
+      color: this.state.channel === c ? accent : "#7a7a9a",
+      onClick: () => this.setState({ channel: c }),
+    }));
+
+    const weekData = [
+      { label: "W1", v: 4.0 }, { label: "W2", v: 4.3 }, { label: "W3", v: 3.8 }, { label: "W4", v: 4.1 },
+      { label: "W5", v: 4.4 }, { label: "W6", v: 4.2 }, { label: "W7", v: 3.9 }, { label: "W8", v: 4.5 },
+    ];
+
+    return {
+      accent,
+      businessName: this.props.businessName ?? "Luna Coffee Roasters",
+      noop: () => {},
+      goInbox: () => this.setState({ tab: "inbox" }),
+      goInsights: () => this.setState({ tab: "insights" }),
+      showInbox: tab === "inbox",
+      showInsights: tab === "insights",
+      inboxTabBg: it.bg, inboxTabBorder: it.border, inboxTabColor: it.color,
+      insightsTabBg: gt.bg, insightsTabBorder: gt.border, insightsTabColor: gt.color,
+      reqTabBg: rq.bg, reqTabBorder: rq.border, reqTabColor: rq.color,
+      rankTabBg: rk.bg, rankTabBorder: rk.border, rankTabColor: rk.color,
+      shareTabBg: sh.bg, shareTabBorder: sh.border, shareTabColor: sh.color,
+      goRequests: () => this.setState({ tab: "requests" }),
+      goRank: () => this.setState({ tab: "rank" }),
+      goShare: () => this.setState({ tab: "share" }),
+      ...this.setupVals(accent, tab),
+      showRequests: tab === "requests",
+      showRank: tab === "rank",
+      showShare: tab === "share",
+      shareables: this.currentVertical().shareables.map((sc, i) => ({
+        ...sc,
+        copyLabel: this.state.copiedShare === i ? "✓ Copied — paste in Instagram" : "Copy caption",
+        onCopy: () => {
+          this.setState({ copiedShare: i });
+          clearTimeout(this._shareT);
+          this._shareT = setTimeout(() => this.setState({ copiedShare: null }), 1800);
+        },
+      })),
+      alertBg: this.state.alertsOn ? "rgba(67,233,123,0.12)" : "transparent",
+      alertBorder: this.state.alertsOn ? "#43e97b" : "#28304a",
+      alertColor: this.state.alertsOn ? "#43e97b" : "#7a7a9a",
+      alertLabel: this.state.alertsOn ? "ON" : "OFF",
+      onToggleAlerts: () => this.setState((s) => ({ alertsOn: !s.alertsOn })),
+      interceptBg: this.state.intercept ? "rgba(67,233,123,0.12)" : "transparent",
+      interceptBorder: this.state.intercept ? "#43e97b" : "#28304a",
+      interceptColor: this.state.intercept ? "#43e97b" : "#7a7a9a",
+      interceptLabel: this.state.intercept ? "ON" : "OFF",
+      onToggleIntercept: () => this.setState((s) => ({ intercept: !s.intercept })),
+      channels,
+      inviteMsg: this.state.inviteMsg,
+      onInviteChange: (e) => this.setState({ inviteMsg: e.target.value }),
+      inviteFlash: this.state.inviteFlash,
+      onSendInvites: () => {
+        this.setState({ inviteFlash: true });
+        clearTimeout(this._flashT);
+        this._flashT = setTimeout(() => this.setState({ inviteFlash: false }), 1800);
+      },
+      reqStats: [
+        { label: "Invites sent", value: "142", color: accent, delta: "this month" },
+        { label: "Left a review", value: "47", color: "#43e97b", delta: "33% conversion" },
+        { label: "Intercepted", value: "11", color: "#ff6584", delta: "kept private" },
+      ],
+      intercepted: [
+        { name: "Anonymous", time: "1d ago", text: "Music was way too loud around noon, couldn't hear my friend across the table." },
+        { name: "Kerem A.", time: "3d ago", text: "Card machine was down and I had no cash — almost left without ordering. Please fix it." },
+      ],
+      rankRows: this.currentVertical().rankRows,
+      rivalName: this.currentVertical().rival,
+      rivalRate: this.currentVertical().rivalRate,
+      inviteTrigger: this.currentVertical().trigger,
+      headerPlatforms: this.currentVertical().platforms.map((p) => (p === "Google Business Profile" ? "Google" : p)),
+      filters,
+      reviews,
+      isEmpty: reviews.length === 0,
+      needsReplyCount: all.filter((r) => !isReplied(r)).length,
+      stats: [
+        { label: "Avg rating", value: "4.2 ★", color: "#f4c55a", delta: "+0.3 vs prev" },
+        { label: "New reviews", value: "38", color: "#3ad6e0", delta: "+9 vs prev" },
+        { label: "Response rate", value: "62%", color: accent, delta: "goal 90%" },
+        { label: "Median response", value: "9h", color: "#43e97b", delta: "−4h vs prev" },
+      ],
+      weeks: weekData.map((w) => ({
+        label: w.label,
+        height: Math.round(((w.v - 3.4) / 1.2) * 100) + "%",
+        color: w.v >= 4.2 ? "#43e97b" : w.v >= 4.0 ? "#f4c55a" : "#ff6584",
+      })),
+      revenueImpact: this.currentVertical().revenueImpact,
+      staff: this.currentVertical().staff,
+      keywords: [
+        { label: "latte art +12", color: "#43e97b" },
+        { label: "friendly staff +9", color: "#43e97b" },
+        { label: "pastries +7", color: "#43e97b" },
+        { label: "wait time −8", color: "#ff6584" },
+        { label: "seating −4", color: "#f4c55a" },
+        { label: "wifi −2", color: "#f4c55a" },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
