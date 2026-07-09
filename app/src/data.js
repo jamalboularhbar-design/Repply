@@ -12,6 +12,17 @@ export const VERTICALS = [
     trigger: "2 hours after checkout",
     rival: "Verve Coffee",
     rivalRate: "19 / mo",
+    revenueImpact: "$600–900",
+    shareables: [
+      { quote: "Best flat white in the neighborhood, hands down.", name: "Deniz K.", platform: "Yelp", cardBg: "linear-gradient(135deg, #6c63ff, #3a2f8f)", caption: "Caption: \"Deniz said it best ☕️ Come find out why. Link in bio to book a table.\" #LocalCoffee" },
+      { quote: "The baristas remember my order and my name.", name: "Priya S.", platform: "Google", cardBg: "linear-gradient(135deg, #ff9f5a, #ff6584)", caption: "Caption: \"This is why we do it ❤️ Thank you Priya! Tag someone who needs their coffee order remembered.\"" },
+      { quote: "Cozy space and great pastries.", name: "Jonah P.", platform: "Google", cardBg: "linear-gradient(135deg, #2fe6a8, #1a8f6a)", caption: "Caption: \"Cozy corner, warm pastries, your new Tuesday spot. 🥐\"" },
+    ],
+    staff: [
+      { name: "Youssef (barista)", initials: "YB", count: 14, stars: "★★★★★" },
+      { name: "Amira (counter)", initials: "AC", count: 9, stars: "★★★★★" },
+      { name: "Sami (roaster)", initials: "SR", count: 5, stars: "★★★★☆" },
+    ],
     rankRows: [
       { keyword: "coffee near me", rank: 4, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Verve Coffee", leaderNote: "2.1× your review velocity" },
       { keyword: "best latte downtown", rank: 2, rankColor: "#43e97b", delta: "—", deltaColor: "#4a4a6a", leader: "Verve Coffee", leaderNote: "38 more reviews than you" },
@@ -25,6 +36,16 @@ export const VERTICALS = [
     trigger: "30 min after the appointment ends",
     rival: "Kings Cuts",
     rivalRate: "14 / mo",
+    revenueImpact: "$900–1,400",
+    shareables: [
+      { quote: "Karim gave me the best fade I've had in years.", name: "Yassine T.", platform: "Google", cardBg: "linear-gradient(135deg, #6c63ff, #2b2467)", caption: "Caption: \"Fresh cuts, happy clients 💈 Book with Karim — link in bio.\"" },
+      { quote: "Lina's color work is unreal, exactly what I asked for.", name: "Sara M.", platform: "Instagram", cardBg: "linear-gradient(135deg, #ff6584, #b23a56)", caption: "Caption: \"Color goals ✨ Ask for Lina at your next visit.\"" },
+    ],
+    staff: [
+      { name: "Karim (senior barber)", initials: "KB", count: 22, stars: "★★★★★" },
+      { name: "Lina (color specialist)", initials: "LC", count: 16, stars: "★★★★★" },
+      { name: "Yassine (junior barber)", initials: "YJ", count: 6, stars: "★★★★☆" },
+    ],
     rankRows: [
       { keyword: "barber near me", rank: 3, rankColor: "#f4c55a", delta: "▲ 2", deltaColor: "#43e97b", leader: "Kings Cuts", leaderNote: "1.6× your review velocity" },
       { keyword: "best fade downtown", rank: 1, rankColor: "#43e97b", delta: "—", deltaColor: "#4a4a6a", leader: "you", leaderNote: "defend it — #2 is 12 reviews behind" },
@@ -38,6 +59,14 @@ export const VERTICALS = [
     trigger: "1 day after purchase",
     rival: "Maison Nour",
     rivalRate: "11 / mo",
+    revenueImpact: "$400–700",
+    shareables: [
+      { quote: "A shop with so much charm — I bought a handmade bag and loved the story behind it.", name: "Carmen L.", platform: "Google", cardBg: "linear-gradient(135deg, #e3b341, #8a5a12)", caption: "Caption: \"Every piece has a story 💛 Thank you Carmen! Shop the collection — link in bio.\"" },
+    ],
+    staff: [
+      { name: "Nadia (owner)", initials: "NO", count: 11, stars: "★★★★★" },
+      { name: "Reda (sales)", initials: "RS", count: 4, stars: "★★★★☆" },
+    ],
     rankRows: [
       { keyword: "gift shop near me", rank: 4, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Maison Nour", leaderNote: "1.3× your review velocity" },
       { keyword: "boutique downtown", rank: 2, rankColor: "#43e97b", delta: "▲ 3", deltaColor: "#43e97b", leader: "Maison Nour", leaderNote: "21 more reviews than you" },
@@ -51,6 +80,16 @@ export const VERTICALS = [
     trigger: "after their 3rd visit",
     rival: "CorePower Studio",
     rivalRate: "22 / mo",
+    revenueImpact: "$1,200–1,800",
+    shareables: [
+      { quote: "Sofia pushed me further than I thought I could go, in the best way.", name: "Nora H.", platform: "Google", cardBg: "linear-gradient(135deg, #2fe6a8, #14614a)", caption: "Caption: \"Stronger every week 💪 Book a session with Sofia — link in bio.\"" },
+      { quote: "Marc's massage fixed a knot in my shoulder that's been there for months.", name: "Ali R.", platform: "Treatwell", cardBg: "linear-gradient(135deg, #7cc4ff, #2b5c8f)", caption: "Caption: \"Relief you can feel ✨ Ask for Marc at your next visit.\"" },
+    ],
+    staff: [
+      { name: "Sofia (lead trainer)", initials: "ST", count: 27, stars: "★★★★★" },
+      { name: "Marc (massage therapist)", initials: "MT", count: 19, stars: "★★★★★" },
+      { name: "Ines (front desk)", initials: "IF", count: 8, stars: "★★★★☆" },
+    ],
     rankRows: [
       { keyword: "gym near me", rank: 6, rankColor: "#ff6584", delta: "▼ 1", deltaColor: "#ff6584", leader: "CorePower Studio", leaderNote: "2.4× your review velocity" },
       { keyword: "day spa", rank: 3, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Serenity Spa", leaderNote: "44 more reviews than you" },
@@ -64,6 +103,14 @@ export const VERTICALS = [
     trigger: "next morning at 11:00",
     rival: "Sky Lounge",
     rivalRate: "16 / mo",
+    revenueImpact: "$1,500–2,300",
+    shareables: [
+      { quote: "Karim's cocktails are next level — best rooftop in the city.", name: "Farah D.", platform: "Instagram", cardBg: "linear-gradient(135deg, #c084fc, #5c2b8f)", caption: "Caption: \"Best seat in the city 🍸 See you this weekend — link in bio to reserve.\"" },
+    ],
+    staff: [
+      { name: "Karim (head bartender)", initials: "KH", count: 18, stars: "★★★★★" },
+      { name: "Dounia (DJ booking)", initials: "DD", count: 7, stars: "★★★★☆" },
+    ],
     rankRows: [
       { keyword: "rooftop bar", rank: 2, rankColor: "#43e97b", delta: "▲ 1", deltaColor: "#43e97b", leader: "Sky Lounge", leaderNote: "1.8× your review velocity" },
       { keyword: "clubs downtown", rank: 5, rankColor: "#ff6584", delta: "▼ 2", deltaColor: "#ff6584", leader: "Velvet Room", leaderNote: "posts events daily on Instagram" },

@@ -2,6 +2,7 @@ import {
   INSIGHT_KEYWORDS, INSIGHT_STATS, INTERCEPTED, REQ_STATS, TONES,
   VERTICALS, WEEK_DATA, BUSINESS_NAME, starStr,
 } from "../data.js";
+import { useRef, useState } from "react";
 import { IS_IOS } from "../lib.js";
 import { accent, cardStyle, mono, pill, primaryBtn, toggleStyle } from "../ui.js";
 
@@ -267,7 +268,49 @@ export function Rank({ r: rep, compact, goRequests }) {
   );
 }
 
-export function Insights({ compact }) {
+export function Share({ r: rep, compact }) {
+  const { vertical } = rep;
+  const [copied, setCopied] = useState(null);
+  const copyT = useRef(null);
+  const onCopy = (sh, i) => {
+    try { navigator.clipboard.writeText(sh.caption); } catch { /* clipboard unavailable */ }
+    setCopied(i);
+    clearTimeout(copyT.current);
+    copyT.current = setTimeout(() => setCopied(null), 1800);
+  };
+  return (
+    <Panel compact={compact} stripeTo="#c084fc" icon="📣" iconBg="rgba(192,132,252,0.15)" title="Turn 5★ reviews into posts" sub="SOCIAL CARD GENERATOR · INSTAGRAM & FACEBOOK">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+        {vertical.shareables.map((sh, i) => (
+          <div key={sh.quote} style={{ background: "#161c32", border: "1px solid #28304a", borderRadius: 10, overflow: "hidden" }}>
+            <div style={{ aspectRatio: "1 / 1", padding: 28, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", background: sh.cardBg, position: "relative" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>💬</div>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: 0.5 }}>{BUSINESS_NAME}</span>
+              </div>
+              <div>
+                <div style={{ color: "#ffe08a", fontSize: 20, letterSpacing: 3, marginBottom: 12 }}>★★★★★</div>
+                <p style={{ fontSize: 18, lineHeight: 1.45, color: "#fff", fontWeight: 600, margin: 0 }}>"{sh.quote}"</p>
+              </div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", fontFamily: "monospace" }}>— {sh.name} · {sh.platform}</div>
+            </div>
+            <div style={{ padding: "14px 16px" }}>
+              <div style={{ fontSize: 11, color: "#7a7a9a", lineHeight: 1.6, marginBottom: 10 }}>{sh.caption}</div>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => onCopy(sh, i)} style={{ flex: 1, background: "rgba(108,99,255,0.12)", border: `1px solid ${accent}`, borderRadius: 6, color: accent, fontFamily: "monospace", fontSize: 11, fontWeight: 600, padding: "7px 10px", cursor: "pointer", minHeight: compact ? 44 : undefined }}>
+                  {copied === i ? "✓ Copied — paste in Instagram" : "Copy caption"}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+
+export function Insights({ r: rep, compact }) {
+  const { vertical } = rep;
   return (
     <Panel compact={compact} stripeTo="#3ad6e0" icon="📊" iconBg="rgba(58,214,224,0.15)" title="Reputation Insights" sub="LAST 30 DAYS">
       <StatCards stats={INSIGHT_STATS(accent)} />
@@ -295,9 +338,31 @@ export function Insights({ compact }) {
       </div>
 
       <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>What customers mention</div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
         {INSIGHT_KEYWORDS.map((k) => (
           <span key={k.label} style={{ ...cardStyle("#28304a", 20), color: k.color, fontSize: 12, padding: "5px 12px", fontFamily: "monospace" }}>{k.label}</span>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 10, background: "linear-gradient(135deg, rgba(67,233,123,0.1), rgba(67,233,123,0.02))", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 8, padding: "14px 16px", marginBottom: 18 }}>
+        <span style={{ fontSize: 20 }}>💰</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ ...mono(10, "#7a7a9a", 1), textTransform: "uppercase", marginBottom: 2 }}>Estimated revenue impact</div>
+          <div style={{ fontSize: 13, color: "#d0d0e8" }}>
+            Your +0.3★ this month is worth roughly <span style={{ color: "#43e97b", fontWeight: 700 }}>{vertical.revenueImpact}</span> in extra monthly bookings — a 0.1★ swing shifts local click-through by several points.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Staff leaderboard · mentioned by name</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {vertical.staff.map((s) => (
+          <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", ...cardStyle(), flexWrap: "wrap" }}>
+            <div style={{ width: 30, height: 30, borderRadius: "50%", background: "rgba(108,99,255,0.15)", border: `1px solid ${accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: accent, flexShrink: 0 }}>{s.initials}</div>
+            <span style={{ fontSize: 13, fontWeight: 600, flex: "1 1 120px" }}>{s.name}</span>
+            <span style={{ fontFamily: "monospace", fontSize: 11, color: "#7a7a9a" }}>{s.count} mentions</span>
+            <span style={{ color: "#f4c55a", fontSize: 12, letterSpacing: 1 }}>{s.stars}</span>
+          </div>
         ))}
       </div>
     </Panel>
