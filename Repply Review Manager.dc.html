@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; background: #070b18; }
+    a { color: #6c63ff; }
+    a:hover { color: #8f88ff; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; background: #070b18; font-family: 'Segoe UI', system-ui, sans-serif; color: #e8e8f0; padding: 40px 20px 60px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 18px">
+
+  <div style="display: flex; align-items: center; gap: 10px">
+    <span style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #4a4a6a">Repply Android · Inbox</span>
+  </div>
+
+  <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" title="Repply" dark="{{ true }}" hint-size="412px,860px">
+    <div style="background: #070b18; min-height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; color: #e8e8f0; padding: 12px 14px 90px; box-sizing: border-box">
+
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: rgba(108,99,255,0.15); border: 1px solid {{ accent }}; display: flex; align-items: center; justify-content: center; font-size: 13px">💬</div>
+        <div style="flex: 1">
+          <div style="font-size: 14px; font-weight: 700">{{ businessName }}</div>
+          <div style="font-family: monospace; font-size: 9px; letter-spacing: 1px; color: #7a7a9a">4.2 ★ · {{ needsReplyCount }} NEED A REPLY</div>
+        </div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #43e97b"></div>
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 2px">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <button onClick="{{ f.onClick }}" style="flex-shrink: 0; background: {{ f.bg }}; border: 1px solid {{ f.border }}; border-radius: 20px; color: {{ f.color }}; font-size: 12px; padding: 7px 14px; cursor: pointer; font-family: inherit; min-height: 34px">{{ f.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="4">
+          <div style="background: #101526; border: 1px solid {{ r.cardBorder }}; border-radius: 10px; padding: 12px 14px">
+            <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 6px; flex-wrap: wrap">
+              <span style="font-family: monospace; font-size: 9px; font-weight: 700; letter-spacing: 1px; color: {{ r.platformColor }}; border: 1px solid {{ r.platformColor }}; border-radius: 2px; padding: 1px 6px; text-transform: uppercase">{{ r.platform }}</span>
+              <span style="color: #f4c55a; font-size: 12px; letter-spacing: 1px">{{ r.stars }}</span>
+              <span style="margin-left: auto; font-family: monospace; font-size: 9px; font-weight: 700; color: {{ r.statusColor }}">{{ r.statusLabel }}</span>
+            </div>
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 3px">{{ r.name }} <span style="font-family: monospace; font-size: 9px; color: #4a4a6a; font-weight: 400">{{ r.time }}</span></div>
+            <p style="font-size: 12px; color: #a0a0c8; line-height: 1.6; margin: 0 0 8px">{{ r.text }}</p>
+            <sc-if value="{{ r.showActions }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ r.onOpen }}" style="width: 100%; background: rgba(108,99,255,0.12); border: 1px solid {{ accent }}; border-radius: 8px; color: {{ accent }}; font-family: monospace; font-size: 11px; font-weight: 600; padding: 10px; cursor: pointer; min-height: 44px">✍ draft reply</button>
+            </sc-if>
+            <sc-if value="{{ r.isOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #28304a; padding-top: 10px">
+                <div style="background: #161c32; border: 1px solid #28304a; border-radius: 8px; color: #e8e8f0; font-size: 12px; padding: 10px 12px; line-height: 1.6; margin-bottom: 8px">{{ r.draft }}</div>
+                <div style="display: flex; gap: 8px">
+                  <button onClick="{{ r.onSend }}" style="flex: 1; background: {{ accent }}; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; padding: 12px; cursor: pointer; font-family: inherit; min-height: 44px">Send</button>
+                  <button onClick="{{ r.onClose }}" style="background: transparent; border: 1px solid #28304a; border-radius: 8px; color: #7a7a9a; font-size: 12px; padding: 12px 16px; cursor: pointer; font-family: inherit; min-height: 44px">Cancel</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position: absolute; bottom: 34px; left: 0; right: 0; display: flex; justify-content: space-around; background: rgba(16,21,38,0.97); border-top: 1px solid #28304a; padding: 8px 0 6px">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 64px; min-height: 44px; justify-content: center">
+          <span style="font-size: 17px">📥</span>
+          <span style="font-family: monospace; font-size: 9px; color: {{ accent }}; font-weight: 700">INBOX</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 64px; min-height: 44px; justify-content: center">
+          <span style="font-size: 17px; opacity: 0.5">🚀</span>
+          <span style="font-family: monospace; font-size: 9px; color: #4a4a6a">INVITES</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 64px; min-height: 44px; justify-content: center">
+          <span style="font-size: 17px; opacity: 0.5">📍</span>
+          <span style="font-family: monospace; font-size: 9px; color: #4a4a6a">RANK</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 64px; min-height: 44px; justify-content: center">
+          <span style="font-size: 17px; opacity: 0.5">📊</span>
+          <span style="font-family: monospace; font-size: 9px; color: #4a4a6a">STATS</span>
+        </div>
+      </div>
+
+    </div>
+  </x-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;businessName&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Luna Coffee Roasters&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#6c63ff&quot;, &quot;options&quot;: [&quot;#6c63ff&quot;, &quot;#e3b341&quot;, &quot;#2fe6a8&quot;, &quot;#7cc4ff&quot;, &quot;#ff6584&quot;, &quot;#c084fc&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot; }
+}">
+class Component extends DCLogic {
+  state = { filter: "all", openId: null, replied: {} };
+
+  data() {
+    return [
+      { id: 1, platform: "Google", pc: "#3ad6e0", rating: 2, name: "Mara T.", time: "2h", sentiment: "neg", text: "Waited 25 minutes for a latte on a quiet Tuesday. Staff were friendly but clearly understaffed.", draft: "Hi Mara — I'm sorry, that's on us. Thanks for telling us straight instead of just not coming back. Next time you're in, ask for me and I'll make sure it goes right." },
+      { id: 2, platform: "Yelp", pc: "#ff6584", rating: 5, name: "Deniz K.", time: "5h", sentiment: "pos", text: "Best flat white in the neighborhood, hands down. The rotating single-origin menu keeps me coming back.", draft: "Hi Deniz, this genuinely made our week. Thanks for taking the minute to write it — see you next time." },
+      { id: 3, platform: "Tripadvisor", pc: "#34e0a1", rating: 5, name: "Amine B.", time: "9h", sentiment: "pos", text: "Un accueil chaleureux et un espresso parfait. Le personnel est adorable !", draft: "Bonjour Amine, merci beaucoup — votre message a fait plaisir à toute l'équipe. À bientôt." },
+      { id: 4, platform: "Facebook", pc: "#6c63ff", rating: 1, name: "R. Alvarez", time: "1d", sentiment: "neg", text: "Ordered a birthday cake pickup and it wasn't ready at the promised time. Really disappointed.", draft: "Hi R. — I'm sorry, that's on us. A birthday shouldn't start with a wait. Please reach out; we'd like to make it right." },
+      { id: 5, platform: "Google", pc: "#3ad6e0", rating: 5, name: "Priya S.", time: "2d", sentiment: "pos", replied: true, text: "The baristas remember my order and my name. My favorite spot in the city.", draft: "" },
+    ];
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? "#6c63ff";
+    const { filter, openId, replied } = this.state;
+    const all = this.data();
+    const isReplied = (r) => replied[r.id] || r.replied;
+    const filtered = all.filter((r) => {
+      if (filter === "needs") return !isReplied(r);
+      if (filter === "neg") return r.sentiment === "neg";
+      if (filter === "replied") return isReplied(r);
+      return true;
+    });
+    const starStr = (n) => "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n);
+    return {
+      accent,
+      businessName: this.props.businessName ?? "Luna Coffee Roasters",
+      needsReplyCount: all.filter((r) => !isReplied(r)).length,
+      filters: [
+        { id: "all", label: "All" },
+        { id: "needs", label: "Needs reply" },
+        { id: "neg", label: "Negative" },
+        { id: "replied", label: "Replied" },
+      ].map((f) => ({
+        label: f.label,
+        bg: filter === f.id ? "rgba(108,99,255,0.18)" : "#101526",
+        border: filter === f.id ? accent : "#28304a",
+        color: filter === f.id ? accent : "#a0a0c8",
+        onClick: () => this.setState({ filter: f.id, openId: null }),
+      })),
+      reviews: filtered.map((r) => {
+        const rep = isReplied(r);
+        return {
+          platform: r.platform,
+          platformColor: r.pc,
+          stars: starStr(r.rating),
+          name: r.name,
+          time: r.time,
+          text: r.text,
+          draft: r.draft,
+          cardBorder: r.sentiment === "neg" && !rep ? "rgba(255,101,132,0.45)" : "#28304a",
+          statusColor: rep ? "#43e97b" : "#ff6584",
+          statusLabel: rep ? "✓ REPLIED" : "NEEDS REPLY",
+          isOpen: openId === r.id,
+          showActions: !rep && openId !== r.id,
+          onOpen: () => this.setState({ openId: r.id }),
+          onClose: () => this.setState({ openId: null }),
+          onSend: () => this.setState((s) => ({ replied: { ...s.replied, [r.id]: true }, openId: null })),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>
