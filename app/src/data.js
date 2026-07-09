@@ -117,12 +117,43 @@ export const VERTICALS = [
       { keyword: "cocktail bar near me", rank: 3, rankColor: "#f4c55a", delta: "—", deltaColor: "#4a4a6a", leader: "Sky Lounge", leaderNote: "29 more reviews than you" },
     ],
   },
+  {
+    id: "riad",
+    label: "🕌 Riad & boutique hotel",
+    platforms: ["Google Business Profile", "Booking.com", "Tripadvisor", "Airbnb"],
+    trigger: "morning of checkout",
+    rival: "Dar Zaman",
+    rivalRate: "23 / mo",
+    revenueImpact: "$2,000–3,500",
+    shareables: [
+      { quote: "Breakfast on the rooftop with the Atlas mountains in the distance — worth the trip alone.", name: "Claire D.", platform: "Tripadvisor", cardBg: "linear-gradient(135deg, #e3b341, #b25c12)", caption: "Caption: \"Sunrise, mint tea, the Atlas on the horizon ☀️ Book your rooftop morning — link in bio.\"" },
+      { quote: "Rachid treated us like family from the moment we walked in.", name: "Sofia A.", platform: "Google", cardBg: "linear-gradient(135deg, #6c63ff, #3a2f8f)", caption: "Caption: \"This is Moroccan hospitality ❤️ Shukran Sofia — we can't wait to welcome you back.\"" },
+    ],
+    staff: [
+      { name: "Rachid (host & concierge)", initials: "RH", count: 31, stars: "★★★★★" },
+      { name: "Fatima (housekeeping)", initials: "FH", count: 12, stars: "★★★★★" },
+      { name: "Youssef (driver)", initials: "YD", count: 8, stars: "★★★★☆" },
+    ],
+    rankRows: [
+      { keyword: "riad marrakech medina", rank: 3, rankColor: "#f4c55a", delta: "▲ 1", deltaColor: "#43e97b", leader: "Dar Zaman", leaderNote: "1.9× your review velocity" },
+      { keyword: "boutique hotel marrakech", rank: 5, rankColor: "#ff6584", delta: "▼ 1", deltaColor: "#ff6584", leader: "Riad Yasmine", leaderNote: "312 more reviews than you" },
+      { keyword: "best rooftop view marrakech", rank: 1, rankColor: "#43e97b", delta: "—", deltaColor: "#4a4a6a", leader: "you", leaderNote: "defend it — #2 is 9 reviews behind" },
+    ],
+  },
 ];
 
 export const getVertical = (id) => VERTICALS.find((v) => v.id === id) || VERTICALS[0];
 
 // Sample review datasets per vertical — verbatim from the design handoff.
 const REVIEWS = {
+  riad: [
+    { id: "h1", platform: "Booking.com", pc: "#7cc4ff", rating: 2, name: "Tom H.", time: "3h ago", sentiment: "neg", text: "We booked the rooftop suite months ahead and were moved to a smaller courtyard room on arrival. Staff were apologetic, but nobody warned us before we landed." },
+    { id: "h2", platform: "Tripadvisor", pc: "#34e0a1", rating: 5, name: "Claire D.", time: "7h ago", sentiment: "pos", text: "Breakfast on the rooftop with the Atlas mountains in the distance — worth the trip alone. Fatima kept our room absolutely spotless all week." },
+    { id: "h3", platform: "Airbnb", pc: "#ff6584", rating: 5, name: "Élodie M.", time: "1d ago", sentiment: "pos", lang: "FR", text: "Un riad magnifique au cœur de la médina. Rachid nous a reçus comme sa propre famille — thé à la menthe à l'arrivée et conseils précieux chaque matin." },
+    { id: "h4", platform: "Google", pc: "#3ad6e0", rating: 1, name: "Daniel R.", time: "2d ago", sentiment: "neg", text: "The AC in our room was broken during a 40-degree week. They brought fans, but at this price the room should have been fixed or swapped the same day." },
+    { id: "h5", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Khalid A.", time: "3d ago", sentiment: "pos", lang: "AR", text: "رياض جميل في قلب المدينة القديمة، هدوء تام رغم قربه من ساحة جامع الفنا. يوسف أوصلنا من المطار وكان دليلاً رائعاً في أزقة المدينة." },
+    { id: "h6", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Sofia A.", time: "4d ago", sentiment: "pos", replied: true, text: "Rachid treated us like family from the moment we walked in. By day two the whole staff knew our names and how we take our coffee." },
+  ],
   barber: [
     { id: "b1", platform: "Google", pc: "#3ad6e0", rating: 5, name: "Yassine E.", time: "3h ago", sentiment: "pos", text: "Walked in without an appointment on a Saturday and Karim still squeezed me in. Cleanest fade I've had in years, honestly." },
     { id: "b2", platform: "Booksy", pc: "#3ad6e0", rating: 2, name: "Marcus D.", time: "7h ago", sentiment: "neg", text: "Second time my 6pm slot started at 6:40. The cut itself is good, but I book ahead for a reason. Not sure I'll be back." },
