@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePersistentState } from "./lib.js";
-import { DEFAULT_INVITE_MSG, getReviews, getVertical, makeDraft } from "./data.js";
+import { BUSINESS_NAME, DEFAULT_INVITE_MSG, getReviews, getVertical, makeDraft } from "./data.js";
 
 const INITIAL = {
   tab: "inbox",
@@ -35,7 +35,37 @@ export function useRepply() {
     return true;
   });
   const needsReplyCount = all.filter((r) => !isReplied(r)).length;
-  const draftFor = (r) => (st.drafts[r.id] !== undefined ? st.drafts[r.id] : makeDraft(r, st.tone));
+
+  // Real AI drafts via /api/draft (Claude), keyed by review+tone. The template
+  // from makeDraft shows instantly and is replaced when the AI draft lands,
+  // unless the user already edited the text. Offline/dev/no-key: template stays.
+  const [aiDrafts, setAiDrafts] = useState({});
+  const [aiPending, setAiPending] = useState({});
+  const aiKey = (r) => `${r.id}:${st.tone}`;
+  const requestAiDraft = (r) => {
+    const key = aiKey(r);
+    if (aiDrafts[key] !== undefined || aiPending[key]) return;
+    setAiPending((p) => ({ ...p, [key]: true }));
+    fetch("/api/draft", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        review: { name: r.name, text: r.text, rating: r.rating, platform: r.platform, lang: r.lang },
+        tone: st.tone,
+        business: BUSINESS_NAME,
+      }),
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+      .then((data) => {
+        if (data.draft) setAiDrafts((d) => ({ ...d, [key]: data.draft }));
+      })
+      .catch(() => {})
+      .finally(() => setAiPending((p) => { const q = { ...p }; delete q[key]; return q; }));
+  };
+  const aiState = (r) => (aiPending[aiKey(r)] ? "loading" : aiDrafts[aiKey(r)] !== undefined ? "ai" : "template");
+
+  const draftFor = (r) =>
+    st.drafts[r.id] !== undefined ? st.drafts[r.id] : aiDrafts[aiKey(r)] !== undefined ? aiDrafts[aiKey(r)] : makeDraft(r, st.tone);
 
   const sendReply = (r) => {
     if (r.platform === "Tripadvisor") {
@@ -64,5 +94,6 @@ export function useRepply() {
   return {
     st, set, vertical, all, filtered, isReplied, needsReplyCount,
     draftFor, sendReply, setTone, inviteFlash, flashInvites, setupDone,
+    requestAiDraft, aiState,
   };
 }

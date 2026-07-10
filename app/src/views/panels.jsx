@@ -2,7 +2,7 @@ import {
   INSIGHT_KEYWORDS, INSIGHT_STATS, INTERCEPTED, REQ_STATS, TONES,
   VERTICALS, WEEK_DATA, BUSINESS_NAME, starStr,
 } from "../data.js";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IS_IOS } from "../lib.js";
 import { Icon } from "../icons.jsx";
 import { accent, cardStyle, mono, pill, primaryBtn, toggleStyle } from "../ui.js";
@@ -49,7 +49,13 @@ const FILTERS = [
 ];
 
 export function Inbox({ r: rep, compact }) {
-  const { st, set, filtered, isReplied, needsReplyCount, draftFor, sendReply, setTone } = rep;
+  const { st, set, filtered, isReplied, needsReplyCount, draftFor, sendReply, setTone, requestAiDraft, aiState } = rep;
+
+  // Fetch the AI draft as soon as a reply editor opens (and again on tone change).
+  useEffect(() => {
+    const open = filtered.find((x) => x.id === st.openId);
+    if (open && !isReplied(open)) requestAiDraft(open);
+  }, [st.openId, st.tone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const reviewCard = (r) => {
     const replied = isReplied(r);
@@ -80,6 +86,8 @@ export function Inbox({ r: rep, compact }) {
               {TONES.map((t) => (
                 <button key={t} onClick={() => setTone(t, r)} style={{ ...pill(t === st.tone), color: t === st.tone ? accent : "#7a7a9a", fontSize: 11, padding: "3px 10px" }}>{t}</button>
               ))}
+              {aiState(r) === "loading" && <span style={mono(10, "#7a7a9a", 1)}>✦ drafting…</span>}
+              {aiState(r) === "ai" && <span style={mono(10, "#43e97b", 1)}>✦ AI</span>}
             </div>
             <textarea
               value={draftFor(r)}
