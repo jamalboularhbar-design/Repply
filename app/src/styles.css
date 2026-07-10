@@ -26,6 +26,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* The design tokens were authored on a canvas viewed at ~90% zoom, so at
+   100% on a large desktop everything reads one notch too small. Scale the
+   whole UI up on wide screens; phones and tablets keep the native size. */
+@media (min-width: 1280px) {
+  body { zoom: 1.15; }
+}
+@media (min-width: 1750px) {
+  body { zoom: 1.25; }
+}
+
 a { color: var(--accent); }
 a:hover { color: #8f88ff; }
 ::selection { background: rgba(108, 99, 255, 0.35); }
