@@ -182,7 +182,7 @@ export function GetReviews({ r: rep, compact }) {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-        <span style={mono(10, "#7a7a9a", 2)}>Negative-review interception</span>
+        <span style={mono(10, "#7a7a9a", 2)}>Private feedback channel</span>
         <button onClick={() => set({ intercept: !st.intercept })} style={toggleStyle(st.intercept)}>{st.intercept ? "ON" : "OFF"}</button>
       </div>
       <div style={{ display: "flex", gap: 10, alignItems: "stretch", flexWrap: "wrap", marginBottom: 18 }}>
@@ -195,21 +195,21 @@ export function GetReviews({ r: rep, compact }) {
           <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(67,233,123,0.08)", border: "1px solid rgba(67,233,123,0.35)", borderRadius: 8, padding: "9px 12px" }}>
             <Icon name="smile" size={16} color="#43e97b" />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#43e97b" }}>Happy → Google review page</div>
-              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>47 sent this month</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "#43e97b" }}>Review invite → Google review page</div>
+              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>same link for every customer · 47 reviews this month</div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,101,132,0.07)", border: "1px solid rgba(255,101,132,0.35)", borderRadius: 8, padding: "9px 12px" }}>
             <Icon name="frown" size={16} color="#ff6584" />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#ff6584" }}>Unhappy → private feedback form</div>
-              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>11 caught before going public</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "#ff6584" }}>Private note → straight to you</div>
+              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4a4a6a" }}>offered on every invite · 11 heads-ups this month</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Private feedback · intercepted</div>
+      <div style={{ ...mono(10, "#7a7a9a", 2), marginBottom: 10 }}>Private feedback · heads-ups</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {INTERCEPTED.map((p) => (
           <div key={p.name} style={{ display: "flex", gap: 10, padding: "10px 14px", background: "#161c32", borderRadius: 6, borderLeft: "3px solid rgba(255,101,132,0.4)" }}>

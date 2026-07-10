@@ -260,7 +260,7 @@ export const INSIGHT_KEYWORDS = [
 export const REQ_STATS = (accent) => [
   { label: "Invites sent", value: "142", color: accent, delta: "this month" },
   { label: "Left a review", value: "47", color: "#43e97b", delta: "33% conversion" },
-  { label: "Intercepted", value: "11", color: "#ff6584", delta: "kept private" },
+  { label: "Private notes", value: "11", color: "#ff6584", delta: "handled directly" },
 ];
 
 export const INTERCEPTED = [
